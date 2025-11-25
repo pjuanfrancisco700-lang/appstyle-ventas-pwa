@@ -163,4 +163,740 @@
       font-size: 11px;
       text-transform: none;
       letter-spacing: 0;
-      color: var(--te
+      color: var(--text-soft);
+      margin-bottom: 2px;
+    }
+
+    .summary-main-value {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .summary-main-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .summary-pill {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 2px;
+      background: var(--accent-soft);
+      border: 1px solid #b3d3ff;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-main);
+    }
+
+    .summary-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .summary-side {
+      display: grid;
+      gap: 6px;
+    }
+
+    .chip {
+      background: var(--card);
+      border-radius: 4px;
+      padding: 6px 8px;
+      border: 1px solid var(--border-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .chip-label {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .chip-value {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 2px 4px;
+      font-size: 12px;
+      color: var(--text-soft);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .section-title span {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 2px;
+      background: #eef3f8;
+      border: 1px solid #d5dadd;
+      text-transform: none;
+      font-weight: 400;
+    }
+
+    form {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 8px;
+      padding: 8px 8px 6px;
+      background: var(--card);
+      border-radius: 4px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    label {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    input, textarea {
+      border-radius: 2px;
+      border: 1px solid var(--border-soft);
+      padding: 6px 8px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #ffffff;
+      outline: none;
+      transition: border-color 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(10,110,209,0.25);
+    }
+
+    input[type="date"] {
+      font-size: 13px;
+    }
+
+    textarea {
+      min-height: 40px;
+      resize: vertical;
+      max-height: 88px;
+    }
+
+    .row-inline {
+      display: grid;
+      grid-template-columns: 1.2fr 0.9fr;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      margin-top: 4px;
+      width: 140px;
+      justify-self: flex-end;
+      border-radius: 2px;
+      padding: 6px 10px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.16);
+      cursor: pointer;
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 0 0 rgba(0,0,0,0.2);
+    }
+
+    .btn-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 2px;
+      border: 1px solid rgba(255,255,255,0.7);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    .list-container {
+      margin-top: 6px;
+      border-radius: 4px;
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      padding: 6px 6px 4px;
+      max-height: 260px;
+      overflow: auto;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .empty-state {
+      font-size: 12px;
+      color: var(--text-soft);
+      padding: 8px 6px 6px;
+      text-align: center;
+    }
+
+    .sale-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4px 10px;
+      padding: 6px 6px;
+      border-radius: 2px;
+      background: #ffffff;
+      border-bottom: 1px solid #edf0f2;
+      margin-bottom: 2px;
+    }
+
+    .sale-main {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .sale-client {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .sale-note {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .sale-meta {
+      font-size: 11px;
+      color: var(--text-soft);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot-soft {
+      width: 4px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.9);
+    }
+
+    .sale-amount {
+      font-size: 14px;
+      font-weight: 600;
+      align-self: center;
+      white-space: nowrap;
+    }
+
+    .badge-date {
+      font-size: 10px;
+      padding: 2px 4px;
+      border-radius: 2px;
+      background: #eef3f8;
+      border: 1px solid #d5dadd;
+    }
+
+    .footer-hint {
+      margin-top: 10px;
+      text-align: left;
+      font-size: 10px;
+      color: var(--text-soft);
+      padding: 4px 2px 0;
+    }
+
+    .vendor-header-row {
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mini-link-button {
+      border: none;
+      background: transparent;
+      border-radius: 2px;
+      padding: 4px 6px;
+      font-size: 11px;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .mini-link-button:active {
+      background: #eef3f8;
+    }
+
+    .backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 40;
+    }
+
+    .backdrop.is-visible {
+      display: flex;
+    }
+
+    .dialog {
+      width: 100%;
+      max-width: 360px;
+      background: var(--card);
+      border-radius: 4px;
+      padding: 14px 14px 12px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+      border: 1px solid var(--border-soft);
+    }
+
+    .dialog h2 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+
+    .dialog-actions {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .btn-secondary {
+      border-radius: 2px;
+      padding: 6px 10px;
+      border: 1px solid var(--border-soft);
+      background: #f4f7fa;
+      font-size: 12px;
+      color: var(--text-soft);
+      cursor: pointer;
+    }
+
+    .btn-secondary:active {
+      background: #e3e8ef;
+    }
+
+    @media (max-width: 380px) {
+      .summary-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <div class="glass-card">
+      <header>
+        <div class="app-title">
+          <div class="app-icon" aria-hidden="true">
+            <div class="app-icon-dot"></div>
+          </div>
+          <div class="app-title-text">
+            <h1>CONTROL Ventas</h1>
+            <span></span>
+          </div>
+        </div>
+        <div class="pill-date">
+          <span class="pill-dot"></span>
+          <span id="todayLabel">Hoy</span>
+        </div>
+      </header>
+
+      <div class="summary-row">
+        <div class="summary-main">
+          <div class="summary-main-label">Total del día</div>
+          <div class="summary-main-value" id="totalHoy">Q0.00</div>
+          <div class="summary-main-meta">
+            <span id="ventasCount">0 ventas</span>
+            <span class="summary-pill">
+              <span class="summary-pill-dot"></span>
+              <span id="promedioHoy">Promedio Q0.00</span>
+            </span>
+          </div>
+        </div>
+        <div class="summary-side">
+          <div class="chip">
+            <span class="chip-label">Fecha filtrada</span>
+            <span class="chip-value" id="fechaChip">-</span>
+          </div>
+          <div class="chip">
+            <span class="chip-label">Histórico guardado</span>
+            <span class="chip-value" id="historicoCount">0 registros</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title vendor-header-row">
+        <strong>Vendedor</strong>
+        <button type="button" class="mini-link-button" id="editarVendedor">Configurar</button>
+      </div>
+      <div class="chip" style="margin:0 2px 8px;">
+        <span class="chip-label">Usuario actual</span>
+        <span class="chip-value" id="vendedorLabel">Sin usuario</span>
+      </div>
+
+      <div class="section-title">
+        <strong>Registrar venta</strong>
+        <span>Solo lo esencial</span>
+      </div>
+
+      <form id="ventaForm">
+        <div class="row-inline">
+          <div class="field">
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" name="fecha" required />
+          </div>
+          <div class="field">
+            <label for="monto">Monto (Q)</label>
+            <input type="number" id="monto" name="monto" required inputmode="decimal" step="0.01" min="0" placeholder="0.00" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="cliente">Cliente</label>
+          <input type="text" id="cliente" name="cliente" placeholder="Ej. Tienda Maribel" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="nota">Nota (opcional)</label>
+          <textarea id="nota" name="nota" placeholder="Ej. Venta con congelador, contado..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary">
+          <span class="btn-icon">＋</span>
+          <span>Agregar venta</span>
+        </button>
+      </form>
+
+      <div class="section-title" style="margin-top:6px;">
+        <strong>Ventas del día</strong>
+        <span id="badgeDia">Hoy</span>
+      </div>
+
+      <div class="list-container" id="listaVentas">
+        <div class="empty-state">Aún no hay ventas registradas para esta fecha.</div>
+      </div>
+
+      <div class="backdrop" id="userDialogBackdrop">
+        <div class="dialog">
+          <h2>Configurar vendedor</h2>
+          <form id="userForm">
+            <label for="userName">Nombre del vendedor</label>
+            <input type="text" id="userName" autocomplete="off" placeholder="Ej. Sergio Ruta 17029" />
+            <div class="dialog-actions">
+              <button type="button" class="btn-secondary" id="cancelUser">Cancelar</button>
+              <button type="submit" class="btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-hint">
+        Datos guardados solo en tu dispositivo (localStorage). Control de Ventas — Datos guardados en tu dispositivo.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "appstyle-ventas-v1";
+    const STORAGE_USER_KEY = "appstyle-ventas-user";
+
+    const form = document.getElementById("ventaForm");
+    const fechaInput = document.getElementById("fecha");
+    const montoInput = document.getElementById("monto");
+    const clienteInput = document.getElementById("cliente");
+    const notaInput = document.getElementById("nota");
+
+    const todayLabel = document.getElementById("todayLabel");
+    const fechaChip = document.getElementById("fechaChip");
+    const badgeDia = document.getElementById("badgeDia");
+    const totalHoyEl = document.getElementById("totalHoy");
+    const ventasCountEl = document.getElementById("ventasCount");
+    const promedioHoyEl = document.getElementById("promedioHoy");
+    const historicoCountEl = document.getElementById("historicoCount");
+    const listaVentas = document.getElementById("listaVentas");
+
+    const vendedorLabel = document.getElementById("vendedorLabel");
+    const editarVendedorBtn = document.getElementById("editarVendedor");
+    const userDialogBackdrop = document.getElementById("userDialogBackdrop");
+    const userForm = document.getElementById("userForm");
+    const userNameInput = document.getElementById("userName");
+    const cancelUserBtn = document.getElementById("cancelUser");
+
+    function formatDateISO(date) {
+      return date.toISOString().slice(0, 10);
+    }
+
+    function formatDateNice(date) {
+      const intl = new Intl.DateTimeFormat("es-GT", { weekday: "short", day: "2-digit", month: "short" });
+      return intl.format(date).replace(",", "");
+    }
+
+    function formatMoney(q) {
+      const n = Number(q) || 0;
+      return "Q" + n.toLocaleString("es-GT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // ---- Usuario ----
+    function loadUser() {
+      try {
+        const raw = localStorage.getItem(STORAGE_USER_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        console.error("Error leyendo usuario", e);
+        return null;
+      }
+    }
+
+    function saveUser(name) {
+      try {
+        localStorage.setItem(STORAGE_USER_KEY, JSON.stringify({ nombre: name, updatedAt: Date.now() }));
+      } catch (e) {
+        console.error("Error guardando usuario", e);
+      }
+    }
+
+    function updateUserUI() {
+      const user = loadUser();
+      if (user && user.nombre) {
+        vendedorLabel.textContent = user.nombre;
+      } else {
+        vendedorLabel.textContent = "Sin usuario";
+      }
+    }
+
+    function openUserDialog() {
+      const existing = loadUser();
+      if (userNameInput) {
+        userNameInput.value = existing && existing.nombre ? existing.nombre : "";
+        setTimeout(() => {
+          userNameInput.focus();
+        }, 10);
+      }
+      if (userDialogBackdrop) {
+        userDialogBackdrop.classList.add("is-visible");
+      }
+    }
+
+    function closeUserDialog() {
+      if (userDialogBackdrop) {
+        userDialogBackdrop.classList.remove("is-visible");
+      }
+    }
+
+    // ---- Ventas ----
+    function loadVentas() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        console.error("Error leyendo ventas", e);
+        return [];
+      }
+    }
+
+    function saveVentas(list) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+      } catch (e) {
+        console.error("Error guardando ventas", e);
+      }
+    }
+
+    function refreshUI() {
+      const selectedDate = fechaInput.value;
+      const ventas = loadVentas();
+
+      historicoCountEl.textContent = ventas.length + (ventas.length === 1 ? " registro" : " registros");
+
+      if (!selectedDate) return;
+
+      const filtered = ventas.filter(v => v.fecha === selectedDate);
+
+      let total = 0;
+      filtered.forEach(v => {
+        total += Number(v.monto) || 0;
+      });
+
+      totalHoyEl.textContent = formatMoney(total);
+      ventasCountEl.textContent = filtered.length + (filtered.length === 1 ? " venta" : " ventas");
+      const promedio = filtered.length ? total / filtered.length : 0;
+      promedioHoyEl.textContent = "Promedio " + formatMoney(promedio);
+
+      const dateObj = new Date(selectedDate + "T00:00:00");
+      fechaChip.textContent = formatDateNice(dateObj);
+
+      const todayISO = formatDateISO(new Date());
+      if (selectedDate === todayISO) {
+        badgeDia.textContent = "Hoy";
+        todayLabel.textContent = "Hoy";
+      } else {
+        badgeDia.textContent = "Filtrando: " + selectedDate;
+        todayLabel.textContent = "Filtro activo";
+      }
+
+      renderLista(filtered, selectedDate);
+    }
+
+    function renderLista(list, dateStr) {
+      listaVentas.innerHTML = "";
+      if (!list.length) {
+        const div = document.createElement("div");
+        div.className = "empty-state";
+        div.textContent = "Aún no hay ventas registradas para esta fecha.";
+        listaVentas.appendChild(div);
+        return;
+      }
+
+      list
+        .slice()
+        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+        .forEach(v => {
+          const item = document.createElement("div");
+          item.className = "sale-item";
+
+          const main = document.createElement("div");
+          main.className = "sale-main";
+
+          const client = document.createElement("div");
+          client.className = "sale-client";
+          client.textContent = v.cliente || "Sin nombre";
+
+          const note = document.createElement("div");
+          note.className = "sale-note";
+          note.textContent = v.nota || "Sin nota";
+
+          const meta = document.createElement("div");
+          meta.className = "sale-meta";
+
+          const time = new Date(v.createdAt || Date.now());
+          const timeLabel = time.toLocaleTimeString("es-GT", { hour: "2-digit", minute: "2-digit" });
+
+          const timeSpan = document.createElement("span");
+          timeSpan.textContent = timeLabel + " · Contado";
+
+          const dot = document.createElement("span");
+          dot.className = "dot-soft";
+
+          const dateSpan = document.createElement("span");
+          dateSpan.className = "badge-date";
+          dateSpan.textContent = v.fecha === dateStr ? "Hoy" : v.fecha;
+
+          meta.appendChild(timeSpan);
+          meta.appendChild(dot);
+          meta.appendChild(dateSpan);
+
+          main.appendChild(client);
+          main.appendChild(note);
+          main.appendChild(meta);
+
+          const amount = document.createElement("div");
+          amount.className = "sale-amount";
+          amount.textContent = formatMoney(v.monto);
+
+          item.appendChild(main);
+          item.appendChild(amount);
+
+          listaVentas.appendChild(item);
+        });
+    }
+
+    // ---- Eventos ----
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const fecha = fechaInput.value;
+      const rawMonto = (montoInput.value || "").replace(",", ".");
+      const monto = parseFloat(rawMonto);
+      const cliente = clienteInput.value.trim();
+      const nota = notaInput.value.trim();
+
+      if (!fecha || isNaN(monto)) {
+        montoInput.focus();
+        return;
+      }
+
+      const ventas = loadVentas();
+      ventas.push({
+        id: Date.now().toString(),
+        fecha,
+        monto,
+        cliente,
+        nota,
+        createdAt: Date.now()
+      });
+
+      saveVentas(ventas);
+
+      montoInput.value = "";
+      clienteInput.value = "";
+      notaInput.value = "";
+      montoInput.blur();
+
+      refreshUI();
+    });
+
+    fechaInput.addEventListener("change", refreshUI);
+
+    if (editarVendedorBtn) {
+      editarVendedorBtn.addEventListener("click", () => {
+        openUserDialog();
+      });
+    }
+
+    if (userForm) {
+      userForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (!userNameInput) return;
+        const nombre = userNameInput.value.trim();
+        if (!nombre) {
+          userNameInput.focus();
+          return;
+        }
+        saveUser(nombre);
+        updateUserUI();
+        closeUserDialog();
+      });
+    }
+
+    if (cancelUserBtn) {
+      cancelUserBtn.addEventListener("click", () => {
+        closeUserDialog();
+      });
+    }
+
+    if (userDialogBackdrop) {
+      userDialogBackdrop.addEventListener("click", (e) => {
+        if (e.target === userDialogBackdrop) {
+          closeUserDialog();
+        }
+      });
+    }
+
+    // ---- Init ----
+    (function init() {
+      const now = new Date();
+      const iso = formatDateISO(now);
+      fechaInput.value = iso;
+      todayLabel.textContent = "Hoy";
+      fechaChip.textContent = formatDateNice(now);
+      updateUserUI();
+      refreshUI();
+    })();
+  </script>
+</body>
+</html>
