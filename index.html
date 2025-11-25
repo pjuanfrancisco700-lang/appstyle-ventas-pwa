@@ -569,9 +569,13 @@
             <input type="number" id="monto" name="monto" required inputmode="decimal" step="0.01" min="0" placeholder="0.00" />
           </div>
         </div>
-        <div class="field">
-          <label for="cliente">Cliente</label>
-          <input type="text" id="cliente" name="cliente" placeholder="Ej. Tienda Maribel" autocomplete="off" />
+                <div class="field">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <label for="cliente">Cliente</label>
+            <button type="button" class="mini-link-button" id="nuevoClienteBtn">Cliente+</button>
+          </div>
+          <input type="text" id="cliente" name="cliente" placeholder="Ej. Tienda Maribel" autocomplete="off" list="clientesList" \/>
+          <datalist id="clientesList"></datalist>
         </div>
         <div class="field">
           <label for="nota">Nota (opcional)</label>
@@ -606,6 +610,30 @@
         </div>
       </div>
 
+      <div class="backdrop" id="clienteDialogBackdrop">
+        <div class="dialog">
+          <h2>Cliente nuevo</h2>
+          <form id="clienteForm">
+            <div class="field">
+              <label for="clienteNombre">Nombre</label>
+              <input type="text" id="clienteNombre" autocomplete="off" placeholder="Ej. Tienda Esquipulas" \/>
+            </div>
+            <div class="field">
+              <label for="clienteCodigo">Código</label>
+              <input type="text" id="clienteCodigo" autocomplete="off" placeholder="Ej. 17029-001" \/>
+            </div>
+            <div class="field">
+              <label for="clienteDireccion">Dirección</label>
+              <textarea id="clienteDireccion" placeholder="Ej. 3a avenida 5-40 zona 1"></textarea>
+            </div>
+            <div class="dialog-actions">
+              <button type="button" class="btn-secondary" id="cancelCliente">Cancelar</button>
+              <button type="submit" class="btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
       <div class="footer-hint">
         Datos guardados solo en tu dispositivo (localStorage). Control de Ventas — Datos guardados en tu dispositivo.
       </div>
@@ -615,6 +643,7 @@
   <script>
     const STORAGE_KEY = "appstyle-ventas-v1";
     const STORAGE_USER_KEY = "appstyle-ventas-user";
+    const STORAGE_CLIENTS_KEY = "appstyle-ventas-clientes-v1";
 
     const form = document.getElementById("ventaForm");
     const fechaInput = document.getElementById("fecha");
@@ -637,6 +666,15 @@
     const userForm = document.getElementById("userForm");
     const userNameInput = document.getElementById("userName");
     const cancelUserBtn = document.getElementById("cancelUser");
+
+    const nuevoClienteBtn = document.getElementById("nuevoClienteBtn");
+    const clienteDialogBackdrop = document.getElementById("clienteDialogBackdrop");
+    const clienteForm = document.getElementById("clienteForm");
+    const clienteNombreInput = document.getElementById("clienteNombre");
+    const clienteCodigoInput = document.getElementById("clienteCodigo");
+    const clienteDireccionInput = document.getElementById("clienteDireccion");
+    const cancelClienteBtn = document.getElementById("cancelCliente");
+    const clientesList = document.getElementById("clientesList");
 
     function formatDateISO(date) {
       return date.toISOString().slice(0, 10);
@@ -696,6 +734,68 @@
     function closeUserDialog() {
       if (userDialogBackdrop) {
         userDialogBackdrop.classList.remove("is-visible");
+      }
+    }
+
+    // ---- Clientes ----
+    function loadClientes() {
+      try {
+        const raw = localStorage.getItem(STORAGE_CLIENTS_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        console.error("Error leyendo clientes", e);
+        return [];
+      }
+    }
+
+    function saveClientes(list) {
+      try {
+        localStorage.setItem(STORAGE_CLIENTS_KEY, JSON.stringify(list));
+      } catch (e) {
+        console.error("Error guardando clientes", e);
+      }
+    }
+
+    function refreshClientesOptions() {
+      if (!clientesList) return;
+      const clientes = loadClientes();
+      clientesList.innerHTML = "";
+      clientes.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c.nombre;
+        opt.label = c.codigo ? `${c.nombre} (${c.codigo})` : c.nombre;
+        clientesList.appendChild(opt);
+      });
+    }
+
+    function findClienteByName(nombre) {
+      if (!nombre) return null;
+      const clientes = loadClientes();
+      const lower = nombre.toLowerCase();
+      return clientes.find(c => (c.nombre || "").toLowerCase() === lower) || null;
+    }
+
+    function openClienteDialog() {
+      if (clienteNombreInput) {
+        clienteNombreInput.value = "";
+      }
+      if (clienteCodigoInput) {
+        clienteCodigoInput.value = "";
+      }
+      if (clienteDireccionInput) {
+        clienteDireccionInput.value = "";
+      }
+      if (clienteDialogBackdrop) {
+        clienteDialogBackdrop.classList.add("is-visible");
+      }
+      setTimeout(() => {
+        if (clienteNombreInput) clienteNombreInput.focus();
+      }, 10);
+    }
+
+    function closeClienteDialog() {
+      if (clienteDialogBackdrop) {
+        clienteDialogBackdrop.classList.remove("is-visible");
       }
     }
 
@@ -779,7 +879,21 @@
 
           const note = document.createElement("div");
           note.className = "sale-note";
-          note.textContent = v.nota || "Sin nota";
+
+          const extraCliente = (v.clienteCodigo || v.clienteDireccion)
+            ? `Cod: ${v.clienteCodigo || "-"} · ${v.clienteDireccion || ""}`
+            : "";
+
+          if (v.nota) {
+            note.textContent = v.nota;
+            if (extraCliente) {
+              note.textContent += " — " + extraCliente;
+            }
+          } else if (extraCliente) {
+            note.textContent = extraCliente;
+          } else {
+            note.textContent = "Sin nota";
+          }
 
           const meta = document.createElement("div");
           meta.className = "sale-meta";
@@ -830,6 +944,8 @@
         return;
       }
 
+      const infoCliente = findClienteByName(cliente);
+
       const ventas = loadVentas();
       ventas.push({
         id: Date.now().toString(),
@@ -837,13 +953,14 @@
         monto,
         cliente,
         nota,
+        clienteCodigo: infoCliente ? (infoCliente.codigo || "") : "",
+        clienteDireccion: infoCliente ? (infoCliente.direccion || "") : "",
         createdAt: Date.now()
       });
 
       saveVentas(ventas);
 
       montoInput.value = "";
-      clienteInput.value = "";
       notaInput.value = "";
       montoInput.blur();
 
@@ -887,6 +1004,58 @@
       });
     }
 
+    if (nuevoClienteBtn) {
+      nuevoClienteBtn.addEventListener("click", () => {
+        openClienteDialog();
+      });
+    }
+
+    if (clienteForm) {
+      clienteForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const nombre = clienteNombreInput ? clienteNombreInput.value.trim() : "";
+        const codigo = clienteCodigoInput ? clienteCodigoInput.value.trim() : "";
+        const direccion = clienteDireccionInput ? clienteDireccionInput.value.trim() : "";
+
+        if (!nombre) {
+          if (clienteNombreInput) clienteNombreInput.focus();
+          return;
+        }
+
+        const clientes = loadClientes();
+        clientes.push({
+          id: Date.now().toString(),
+          nombre,
+          codigo,
+          direccion,
+          createdAt: Date.now()
+        });
+
+        saveClientes(clientes);
+        refreshClientesOptions();
+
+        if (clienteInput) {
+          clienteInput.value = nombre;
+        }
+
+        closeClienteDialog();
+      });
+    }
+
+    if (cancelClienteBtn) {
+      cancelClienteBtn.addEventListener("click", () => {
+        closeClienteDialog();
+      });
+    }
+
+    if (clienteDialogBackdrop) {
+      clienteDialogBackdrop.addEventListener("click", (e) => {
+        if (e.target === clienteDialogBackdrop) {
+          closeClienteDialog();
+        }
+      });
+    }
+
     // ---- Init ----
     (function init() {
       const now = new Date();
@@ -895,6 +1064,7 @@
       todayLabel.textContent = "Hoy";
       fechaChip.textContent = formatDateNice(now);
       updateUserUI();
+      refreshClientesOptions();
       refreshUI();
     })();
   </script>
