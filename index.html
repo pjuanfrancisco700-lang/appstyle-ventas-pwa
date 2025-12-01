@@ -2,43 +2,46 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <title>Registro de Clientes — Ruta</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <title>Registro de Clientes</title>
   <style>
     :root {
-      --bg: #F2F2F7;
+      --bg: #F4F5F7;
       --card: #FFFFFF;
-      --border: #D0D5DD;
-      --accent: #0F62A9;   /* Azul tipo SAP */
-      --accent-soft: #E3F2FF;
+      --primary: #0F3B5F;   /* toque SAP */
+      --primary-soft: #D8E3F0;
+      --border: #D0D4DD;
       --text-main: #111827;
       --text-muted: #6B7280;
-      --success: #15803D;
+      --accent: #2563EB;
+      --danger: #B91C1C;
+      --shadow-soft: 0 6px 18px rgba(15, 59, 95, 0.08);
       --radius-lg: 16px;
-      --radius-md: 10px;
     }
 
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
     }
 
     body {
-      margin: 0;
       background: var(--bg);
       color: var(--text-main);
       display: flex;
       justify-content: center;
+      padding: 12px 8px 24px;
     }
 
     .app-shell {
       width: 100%;
-      max-width: 430px; /* pensado para smartphone */
-      min-height: 100vh;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      max-width: 480px;
+      background: linear-gradient(to bottom, #F9FAFB, #EEF1F5);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 10px 10px 18px;
+      border: 1px solid rgba(15,59,95,0.06);
     }
 
     .top-bar {
@@ -46,302 +49,438 @@
       align-items: center;
       justify-content: space-between;
       background: var(--card);
-      border-radius: var(--radius-lg);
-      padding: 10px 12px;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
-      border: 1px solid var(--border);
-      gap: 10px;
+      border-radius: 18px;
+      padding: 8px 10px;
+      border: 1px solid rgba(15,59,95,0.06);
+      margin-bottom: 10px;
     }
 
     .top-left {
       display: flex;
       align-items: center;
       gap: 8px;
-    }
-
-    .icon-button {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: #F9FAFB;
-      cursor: pointer;
-      font-size: 18px;
-    }
-
-    .icon-button:hover {
-      background: #EEF2FF;
-    }
-
-    .route-box {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .route-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--text-muted);
-    }
-
-    .route-input {
-      border: none;
-      border-bottom: 1px solid var(--border);
-      font-size: 13px;
-      padding: 2px 0;
-      width: 90px;
-      outline: none;
-      background: transparent;
-    }
-
-    .title {
-      font-size: 13px;
-      text-align: right;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--accent);
-    }
-
-    .main-card {
-      background: var(--card);
-      border-radius: var(--radius-lg);
-      padding: 10px 10px 12px;
-      border: 1px solid var(--border);
-      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
       flex: 1;
     }
 
-    .row {
-      display: flex;
-      gap: 8px;
+    .file-label {
+      display: inline-flex;
       align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 18px;
+      cursor: pointer;
+      flex-shrink: 0;
     }
 
-    .row.space {
-      justify-content: space-between;
+    .file-label span {
+      transform: translateY(-1px);
     }
 
-    .field-label {
+    #dbInput {
+      display: none;
+    }
+
+    .route-input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .route-input label {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .route-input input {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 5px 8px;
+      font-size: 12px;
+      outline: none;
+      background: #F9FAFB;
+    }
+
+    .route-input input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(37,99,235,0.16);
+      background: #FFFFFF;
+    }
+
+    .top-right {
+      text-align: right;
+      margin-left: 6px;
+    }
+
+    .top-right .title {
       font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+      border-left: 2px solid var(--primary);
+      padding-left: 6px;
+      line-height: 1.2;
+    }
+
+    .top-right .subtitle {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .section-card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      padding: 10px 10px 8px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(148,163,184,0.35);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .section-header h2 {
+      font-size: 12px;
+      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--text-muted);
     }
 
-    select, input[type="text"] {
-      width: 100%;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      padding: 7px 9px;
-      font-size: 13px;
-      outline: none;
-      background: #F9FAFB;
+    .badge-today {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary);
     }
 
-    select:focus, input[type="text"]:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(15, 98, 169, 0.25);
+    .day-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .day-selector {
+      flex: 1;
+    }
+
+    .day-selector label {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .day-selector select {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 6px 9px;
+      font-size: 12px;
+      background: #F9FAFB;
+      outline: none;
+    }
+
+    .day-selector select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(37,99,235,0.16);
       background: #FFFFFF;
     }
 
-    .day-select-group {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+    .day-note {
+      font-size: 10px;
+      color: var(--text-muted);
+      max-width: 45%;
+      line-height: 1.2;
     }
 
-    .tag-auto {
-      display: inline-flex;
+    .search-row {
+      display: flex;
       align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: #E5F0FA;
-      color: var(--accent);
-    }
-
-    .search-section {
-      display: flex;
-      flex-direction: column;
       gap: 6px;
+      margin-bottom: 6px;
     }
 
-    .search-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .search-field {
+      flex: 1;
+      position: relative;
     }
 
-    .icon-plus {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      border: 1px dashed var(--accent);
+    .search-field label {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .search-field input {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 6px 26px 6px 8px;
+      font-size: 12px;
+      background: #F9FAFB;
+      outline: none;
+    }
+
+    .search-field input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(37,99,235,0.16);
+      background: #FFFFFF;
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .add-client-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      border: none;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       font-size: 18px;
-      color: var(--accent);
       cursor: pointer;
+      background: var(--accent);
+      color: #FFFFFF;
+      box-shadow: 0 4px 10px rgba(37,99,235,0.35);
+      flex-shrink: 0;
     }
 
-    .big-box {
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      background: #F9FAFB;
-      padding: 6px;
-      min-height: 190px;
-      max-height: 260px;
+    .add-client-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 6px rgba(37,99,235,0.4);
+    }
+
+    .hint-text {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .result-list {
+      max-height: 140px;
       overflow-y: auto;
-      font-size: 13px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .search-input-inner {
-      width: 100%;
-    }
-
-    .results-list {
-      flex: 1;
-      overflow-y: auto;
-    }
-
-    .client-item {
-      padding: 6px 8px;
       border-radius: 10px;
+      border: 1px solid rgba(209, 213, 219, 0.8);
+      background: #F9FAFB;
+      padding: 2px;
+    }
+
+    .result-item {
+      padding: 6px 8px;
+      border-radius: 8px;
+      margin: 2px;
+      cursor: pointer;
+      font-size: 11px;
       display: flex;
       flex-direction: column;
-      gap: 2px;
-      cursor: pointer;
+      gap: 1px;
     }
 
-    .client-item:nth-child(odd) {
-      background: #F3F4F6;
+    .result-item:hover {
+      background: #E5EDF7;
     }
 
-    .client-item:nth-child(even) {
-      background: #E5F0FA;
+    .result-item.selected {
+      background: #DBEAFE;
+      border: 1px solid var(--accent);
     }
 
-    .client-item.active {
-      outline: 2px solid var(--accent);
-      background: var(--accent-soft);
-    }
-
-    .client-name {
+    .result-name {
       font-weight: 600;
+      color: var(--text-main);
     }
 
-    .client-meta {
-      font-size: 11px;
+    .result-meta {
+      font-size: 10px;
       color: var(--text-muted);
     }
 
     .actions-row {
       display: flex;
       justify-content: flex-end;
+      margin-top: 6px;
       gap: 6px;
-      margin-top: 4px;
     }
 
-    .primary-btn, .secondary-btn {
+    .btn {
       border-radius: 999px;
-      font-size: 13px;
-      padding: 7px 14px;
+      padding: 6px 16px;
+      font-size: 12px;
       border: none;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      font-weight: 500;
     }
 
-    .primary-btn {
-      background: var(--accent);
+    .btn-primary {
+      background: var(--primary);
       color: #FFFFFF;
+      box-shadow: 0 4px 10px rgba(15,59,95,0.35);
     }
 
-    .primary-btn:disabled {
+    .btn-primary:disabled {
       background: #9CA3AF;
-      cursor: not-allowed;
+      box-shadow: none;
+      cursor: default;
     }
 
-    .secondary-btn {
-      border-radius: 999px;
-      border: 1px solid var(--accent);
-      background: #FFFFFF;
-      color: var(--accent);
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(1px);
+      box-shadow: 0 2px 6px rgba(15,59,95,0.4);
+    }
+
+    .btn-restruct {
+      width: 100%;
       justify-content: center;
-      flex: 1;
-    }
-
-    .secondary-btn.excel {
-      border-color: var(--success);
-      color: var(--success);
-    }
-
-    .section-title {
-      font-size: 11px;
+      margin-top: 4px;
+      padding: 8px 16px;
+      background: linear-gradient(to right, #0F3B5F, #2563EB);
+      color: #FFFFFF;
+      font-size: 13px;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-top: 4px;
+      letter-spacing: 0.12em;
+      border-radius: 999px;
+      box-shadow: 0 6px 14px rgba(37,99,235,0.35);
     }
 
-    .restruct-box {
-      margin-top: 4px;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      background: #F9FAFB;
-      padding: 8px;
-      min-height: 130px;
-      max-height: 230px;
-      overflow-y: auto;
-      font-size: 12px;
+    .btn-restruct:active {
+      transform: translateY(1px);
+      box-shadow: 0 3px 8px rgba(37,99,235,0.45);
     }
 
-    .day-block {
+    .btn-restruct span.icon {
+      font-size: 14px;
+    }
+
+    .btn-restruct span.label {
+      font-weight: 600;
+    }
+
+    .section-res {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 10px;
+      border: 1px solid rgba(148,163,184,0.5);
+    }
+
+    .res-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 6px;
     }
 
-    .day-block-title {
-      font-weight: 600;
-      color: var(--accent);
+    .res-header h2 {
       font-size: 12px;
-      margin-bottom: 3px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
     }
 
-    .day-client {
-      padding-left: 10px;
-      line-height: 1.4;
-    }
-
-    .footer-note {
-      margin-top: 4px;
+    .res-count {
       font-size: 10px;
       color: var(--text-muted);
     }
 
-    .small {
+    .day-block {
+      margin-top: 8px;
+      border-radius: 14px;
+      border: 1px solid rgba(209,213,219,0.9);
+      overflow: hidden;
+      background: #F9FAFB;
+    }
+
+    .day-block-header {
+      background: linear-gradient(to right, #0F3B5F, #2563EB);
+      color: #FFFFFF;
+      padding: 6px 8px;
       font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .day-block-header strong {
+      font-weight: 600;
+    }
+
+    .day-block-header span {
+      font-size: 10px;
+      opacity: 0.9;
+    }
+
+    .day-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+
+    .day-table thead {
+      background: #E5E7EB;
+    }
+
+    .day-table th,
+    .day-table td {
+      padding: 4px 6px;
+      border-bottom: 1px solid #E5E7EB;
+      text-align: left;
+    }
+
+    .day-table th {
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .day-table tr:nth-child(even) td {
+      background: #F3F4F6;
+    }
+
+    .empty-state {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: #F9FAFB;
+      border-radius: 12px;
+      padding: 8px;
+      border: 1px dashed #D1D5DB;
     }
 
     /* Modal nuevo cliente */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.35);
+      background: rgba(15,23,42,0.35);
       display: none;
       align-items: center;
       justify-content: center;
@@ -349,27 +488,28 @@
     }
 
     .modal {
-      width: 90%;
-      max-width: 380px;
-      background: #FFFFFF;
-      border-radius: var(--radius-lg);
-      padding: 14px 14px 12px;
-      border: 1px solid var(--border);
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.28);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      width: 100%;
+      max-width: 420px;
+      background: var(--card);
+      border-radius: 22px;
+      padding: 12px 12px 10px;
+      box-shadow: 0 14px 36px rgba(15,23,42,0.55);
+      border: 1px solid rgba(15,59,95,0.2);
     }
 
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 8px;
     }
 
     .modal-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
     }
 
     .modal-close {
@@ -380,478 +520,551 @@
       color: var(--text-muted);
     }
 
-    .modal-fields {
+    .modal-body {
       display: flex;
       flex-direction: column;
       gap: 6px;
-      margin-top: 4px;
+      max-height: 60vh;
+      overflow-y: auto;
+      padding-right: 2px;
     }
 
-    .modal-actions {
+    .field-group label {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .field-group input {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 6px 8px;
+      font-size: 12px;
+      background: #F9FAFB;
+      outline: none;
+    }
+
+    .field-group input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(37,99,235,0.18);
+      background: #FFFFFF;
+    }
+
+    .modal-footer {
       display: flex;
       justify-content: flex-end;
       gap: 6px;
-      margin-top: 6px;
+      margin-top: 8px;
+    }
+
+    .btn-secondary {
+      background: #E5E7EB;
+      color: #111827;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #059669;
+      color: #FFFFFF;
+      font-size: 11px;
+      display: none;
+      z-index: 30;
+      box-shadow: 0 8px 20px rgba(5,150,105,0.5);
+    }
+
+    .toast.error {
+      background: var(--danger);
+      box-shadow: 0 8px 20px rgba(185,28,28,0.5);
     }
   </style>
 </head>
 <body>
-<div class="app-shell">
-  <!-- Barra superior -->
-  <header class="top-bar">
-    <div class="top-left">
-      <button class="icon-button" id="btnUpload" title="Cargar base (TXT)">📂</button>
-      <input type="file" id="fileInput" accept=".txt" style="display:none" />
-      <div class="route-box">
-        <span class="route-label">Ruta</span>
-        <input type="text" id="routeInput" class="route-input" placeholder="17029" />
+  <div class="app-shell">
+    <!-- Encabezado -->
+    <header class="top-bar">
+      <div class="top-left">
+        <label class="file-label" for="dbInput" title="Cargar base de datos (.txt)">
+          <span>📂</span>
+        </label>
+        <input id="dbInput" type="file" accept=".txt" />
+        <div class="route-input">
+          <label for="routeInput">Ruta</label>
+          <input id="routeInput" type="text" placeholder="Ej. 17029" inputmode="numeric" />
+        </div>
       </div>
-    </div>
-    <div class="title">REGISTRO DE CLIENTES</div>
-  </header>
+      <div class="top-right">
+        <div class="title">REGISTRO DE CLIENTES</div>
+        <div class="subtitle">Base TXT · RUTA · NEGOCIO · DIRECCIÓN</div>
+      </div>
+    </header>
 
-  <!-- Tarjeta principal -->
-  <main class="main-card">
-    <!-- Selección de día -->
-    <div class="day-select-group">
-      <div class="row space">
-        <span class="field-label">Día de visita</span>
-        <span class="tag-auto">⏱ Auto: <span id="autoDayName">Lunes</span></span>
+    <!-- Día y búsqueda -->
+    <section class="section-card">
+      <div class="section-header">
+        <h2>Día y búsqueda</h2>
+        <div class="badge-today" id="todayBadge">Hoy: —</div>
       </div>
-      <select id="daySelect">
-        <option value="1">Día 1 — Lunes</option>
-        <option value="2">Día 2 — Martes</option>
-        <option value="3">Día 3 — Miércoles</option>
-        <option value="4">Día 4 — Jueves</option>
-        <option value="5">Día 5 — Viernes</option>
-        <option value="6">Día 6 — Sábado</option>
-      </select>
-      <div class="small" style="color:var(--text-muted);">
-        Detecta el día actual automáticamente, pero puedes cambiarlo para agregar clientes a otros días.
-      </div>
-    </div>
 
-    <!-- Buscar / seleccionar cliente -->
-    <section class="search-section">
-      <div class="search-header">
-        <span class="field-label">Buscar cliente</span>
-        <div class="row" style="gap:6px;align-items:center;">
-          <span class="small" style="color:var(--text-muted);">Nuevo cliente</span>
-          <button class="icon-plus" id="btnNewClient" title="Crear cliente nuevo">+</button>
+      <div class="day-row">
+        <div class="day-selector">
+          <label for="daySelect">Día de trabajo</label>
+          <select id="daySelect">
+            <option value="0">Lunes</option>
+            <option value="1">Martes</option>
+            <option value="2">Miércoles</option>
+            <option value="3">Jueves</option>
+            <option value="4">Viernes</option>
+            <option value="5">Sábado</option>
+          </select>
         </div>
+        <p class="day-note">
+          Detecta el día actual de forma automática, pero puedes cambiarlo para asignar clientes a otros días.
+        </p>
       </div>
-      <div class="big-box">
-        <div class="search-input-inner">
-          <input id="searchInput" type="text" placeholder="Ruta, código o nombre del negocio…" />
+
+      <div class="search-row">
+        <div class="search-field">
+          <label for="searchInput">Buscar cliente</label>
+          <input id="searchInput" type="text" placeholder="Por ruta o nombre del negocio" />
+          <span class="search-icon">🔍</span>
         </div>
-        <div id="searchResults" class="results-list">
-          <div class="small" style="color:var(--text-muted);">
-            Carga la base TXT y escribe para buscar clientes por ruta, código o nombre.
-          </div>
-        </div>
-        <div class="actions-row">
-          <button class="primary-btn" id="btnSaveClient" disabled>
-            Guardar en <span id="labelCurrentDay">Día 1 — Lunes</span>
-          </button>
-        </div>
+        <button class="add-client-btn" id="btnNewClient" title="Crear cliente nuevo">
+          +
+        </button>
+      </div>
+
+      <p class="hint-text">
+        Carga primero la base .txt. Puedes filtrar por <strong>ruta</strong> (campo superior) o por <strong>nombre del negocio</strong>.
+      </p>
+
+      <div class="result-list" id="resultList">
+        <!-- Resultados de búsqueda -->
+      </div>
+
+      <div class="actions-row">
+        <button class="btn btn-primary" id="btnSaveClient" disabled>
+          <span>✔</span> Guardar en día
+        </button>
       </div>
     </section>
 
-    <!-- Reestructura -->
-    <div class="section-title">Reestructura por día</div>
-    <div class="row" style="gap:8px;">
-      <button class="secondary-btn" id="btnRestructure">🧩 REESTRUCTURA</button>
-      <button class="secondary-btn excel" id="btnExportExcel">📊 Excel</button>
-    </div>
-    <div class="restruct-box" id="restructOutput">
-      <div class="small" style="color:var(--text-muted);">
-        Aquí se mostrará la base nueva ordenada por día: DIA 1 LUNES (1,2,3,4,5…), DIA 2 MARTES, hasta SÁBADO.
-      </div>
-    </div>
-    <div class="footer-note">
-      • La base TXT puede venir desordenada y con duplicados; la REESTRUCTURA deja un único registro por cliente, ordenado por día. <br>
-      • El archivo Excel respeta el mismo orden para compartir la nueva base ya limpia.
-    </div>
-  </main>
-</div>
+    <!-- Botón REESTRUCTURA -->
+    <button class="btn btn-restruct" id="btnRestruct">
+      <span class="icon">⚙</span>
+      <span class="label">Reestructura</span>
+    </button>
 
-<!-- Modal nuevo cliente -->
-<div class="modal-backdrop" id="modalBackdrop">
-  <div class="modal">
-    <div class="modal-header">
-      <div>
+    <!-- Tabla reestructurada -->
+    <section class="section-res" style="margin-top: 10px;">
+      <div class="res-header">
+        <h2>Ruta reestructurada por día</h2>
+        <div class="res-count" id="summaryCount">0 clientes asignados</div>
+      </div>
+
+      <div id="restructuredContainer">
+        <div class="empty-state">
+          Aún no hay clientes asignados. Selecciona un cliente y usa el botón <strong>Guardar en día</strong>. Luego presiona
+          <strong>REESTRUCTURA</strong> para ver la tabla ordenada por día.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Modal nuevo cliente -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <div class="modal-header">
         <div class="modal-title">Nuevo cliente</div>
-        <div class="small" style="color:var(--text-muted);">Se asignará al <span id="modalDayLabel">Día 1 — Lunes</span>.</div>
+        <button class="modal-close" id="modalCloseBtn">&times;</button>
       </div>
-      <button class="modal-close" id="btnModalClose">&times;</button>
-    </div>
-    <div class="modal-fields">
-      <div>
-        <div class="field-label">Ruta</div>
-        <input type="text" id="newRuta" placeholder="Ej. 17029" />
+      <div class="modal-body">
+        <div class="field-group">
+          <label for="newRoute">Ruta</label>
+          <input id="newRoute" type="text" placeholder="Ej. 17029" inputmode="numeric" />
+        </div>
+        <div class="field-group">
+          <label for="newCode">Código</label>
+          <input id="newCode" type="text" placeholder="Código interno" />
+        </div>
+        <div class="field-group">
+          <label for="newName">Nombre del negocio</label>
+          <input id="newName" type="text" placeholder="Ej. Tienda Marissa" />
+        </div>
+        <div class="field-group">
+          <label for="newAddress">Dirección</label>
+          <input id="newAddress" type="text" placeholder="Dirección del negocio" />
+        </div>
       </div>
-      <div>
-        <div class="field-label">Código</div>
-        <input type="text" id="newCodigo" placeholder="Código del cliente" />
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="modalCancelBtn">Cancelar</button>
+        <button class="btn btn-primary" id="modalSaveBtn">Guardar cliente</button>
       </div>
-      <div>
-        <div class="field-label">Nombre del negocio</div>
-        <input type="text" id="newNombre" placeholder="Tienda, depósito, etc." />
-      </div>
-      <div>
-        <div class="field-label">Dirección</div>
-        <input type="text" id="newDireccion" placeholder="Dirección principal" />
-      </div>
-    </div>
-    <div class="modal-actions">
-      <button class="secondary-btn small" id="btnModalCancel">Cancelar</button>
-      <button class="primary-btn small" id="btnModalSave">Guardar</button>
     </div>
   </div>
-</div>
 
-<script>
-  // Nombres de días (1 a 6)
-  const dayNames = {
-    1: "Lunes",
-    2: "Martes",
-    3: "Miércoles",
-    4: "Jueves",
-    5: "Viernes",
-    6: "Sábado"
-  };
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
 
-  let clientsAll = [];       // Base completa (TXT + nuevos)
-  let selectedDay = 1;       // Día seleccionado en la app
-  let autoDay = 1;           // Día detectado por fecha del sistema
-  let selectedClientId = null;
-  let lastRestructured = null; // Cache de última reestructura
+  <script>
+    // ====== Estado de la app ======
+    const DAY_NAMES = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
-  function getTodayDayNumber() {
-    const d = new Date().getDay(); // 0-dom,1-lun,...,6-sab
-    switch (d) {
-      case 1: return 1; // lunes
-      case 2: return 2;
-      case 3: return 3;
-      case 4: return 4;
-      case 5: return 5;
-      case 6: return 6; // sábado
-      default: return 1; // domingo -> Día 1
-    }
-  }
+    /** Clientes cargados desde TXT o creados
+     * { ruta, codigo, nombre, direccion }
+     */
+    let clients = [];
 
-  function updateDayLabels() {
-    const autoDayName = document.getElementById("autoDayName");
-    const labelCurrentDay = document.getElementById("labelCurrentDay");
-    const modalDayLabel = document.getElementById("modalDayLabel");
+    /** Asignaciones a días
+     * { dayIndex, ruta, codigo, nombre, direccion, timestamp }
+     */
+    let assignments = [];
 
-    autoDayName.textContent = dayNames[autoDay] || "Lunes";
-    const text = `Día ${selectedDay} — ${dayNames[selectedDay] || ""}`;
-    labelCurrentDay.textContent = text;
-    modalDayLabel.textContent = text;
-  }
+    let selectedClientIndex = null; // índice en el arreglo clients
 
-  function renderSearchResults() {
-    const container = document.getElementById("searchResults");
-    const searchInput = document.getElementById("searchInput");
-    const term = searchInput.value.trim().toLowerCase();
-
-    container.innerHTML = "";
-
-    if (!clientsAll.length) {
-      container.innerHTML = '<div class="small" style="color:#6B7280;">Carga primero la base TXT o crea un cliente nuevo.</div>';
-      return;
+    // ====== Utilidades ======
+    function showToast(message, isError = false) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.toggle("error", isError);
+      toast.style.display = "inline-flex";
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 2200);
     }
 
-    const filtered = term
-      ? clientsAll.filter(c => {
-          return (
-            (c.ruta && String(c.ruta).toLowerCase().includes(term)) ||
-            (c.codigo && String(c.codigo).toLowerCase().includes(term)) ||
-            (c.nombre && c.nombre.toLowerCase().includes(term))
-          );
-        })
-      : clientsAll;
-
-    if (!filtered.length) {
-      container.innerHTML = '<div class="small" style="color:#6B7280;">Sin resultados para esa búsqueda.</div>';
-      return;
+    function getTodayDayIndex() {
+      const jsDay = new Date().getDay(); // 0=Domingo, 1=Lunes...
+      if (jsDay === 0) return 0; // Domingo -> Lunes (0)
+      if (jsDay >= 1 && jsDay <= 6) return jsDay - 1; // Lunes-Sábado
+      return 0;
     }
 
-    filtered.forEach(c => {
-      const item = document.createElement("div");
-      item.className = "client-item";
-      item.dataset.id = c.id;
+    function updateTodayBadge() {
+      const idx = getTodayDayIndex();
+      const badge = document.getElementById("todayBadge");
+      badge.textContent = "Hoy: " + DAY_NAMES[idx];
+    }
 
-      if (c.id === selectedClientId) {
-        item.classList.add("active");
+    function refreshSummaryCount() {
+      const summary = document.getElementById("summaryCount");
+      const total = assignments.length;
+      summary.textContent = `${total} cliente${total === 1 ? "" : "s"} asignado${total === 1 ? "" : "s"}`;
+    }
+
+    // ====== Manejo de archivo TXT ======
+    function parseTxtContent(text) {
+      const lines = text.split(/\r?\n/);
+      const parsed = [];
+
+      for (let line of lines) {
+        line = line.trim();
+        if (!line) continue;
+
+        // saltar encabezado
+        if (/^ruta\s*/i.test(line) && line.toLowerCase().includes("codigo")) {
+          continue;
+        }
+
+        // soportar separadores por tab, punto y coma o coma
+        const parts = line.split(/\t|;|,/).map(p => p.trim()).filter(p => p.length > 0);
+        if (parts.length < 4) continue;
+
+        const ruta = parts[0];
+        const codigo = parts[1];
+        const nombre = parts[2];
+        const direccion = parts.slice(3).join(" "); // resto
+
+        parsed.push({ ruta, codigo, nombre, direccion });
       }
 
-      const nombre = document.createElement("div");
-      nombre.className = "client-name";
-      nombre.textContent = c.nombre || "(Sin nombre)";
-
-      const meta = document.createElement("div");
-      meta.className = "client-meta";
-      meta.textContent = `Ruta ${c.ruta || "-"} | Código ${c.codigo || "-"} | Día ${c.day || "-"} ${dayNames[c.day] || ""}`;
-
-      item.appendChild(nombre);
-      item.appendChild(meta);
-
-      item.addEventListener("click", () => {
-        selectedClientId = c.id;
-        updateSaveButtonState();
-        renderSearchResults(); // Refrescar estilos
-      });
-
-      container.appendChild(item);
-    });
-  }
-
-  function updateSaveButtonState() {
-    const btn = document.getElementById("btnSaveClient");
-    btn.disabled = !selectedClientId;
-  }
-
-  function handleSaveClientToDay() {
-    if (!selectedClientId) return;
-    const client = clientsAll.find(c => c.id === selectedClientId);
-    if (!client) return;
-
-    client.day = selectedDay; // asignar al día seleccionado
-    restructureBase();
-    alert(`Cliente asignado a Día ${selectedDay} — ${dayNames[selectedDay] || ""}.`);
-  }
-
-  function restructureBase() {
-    // Dedupe: por código; si no existe código, por (nombre + direccion)
-    const uniqueMap = new Map();
-
-    // Recorremos de atrás hacia adelante para que el último cambio tenga prioridad
-    for (let i = clientsAll.length - 1; i >= 0; i--) {
-      const c = clientsAll[i];
-      const key = (c.codigo && String(c.codigo).trim()) || ((c.nombre || "") + "|" + (c.direccion || ""));
-      if (!key.trim()) continue;
-
-      if (!uniqueMap.has(key)) {
-        let day = parseInt(c.day, 10);
-        if (!day || day < 1 || day > 6) day = 1;
-        uniqueMap.set(key, { ...c, day });
-      }
+      return parsed;
     }
 
-    const grouped = { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
-    for (const [, client] of uniqueMap) {
-      const d = client.day || 1;
-      grouped[d].push(client);
-    }
-
-    // Ordenar dentro de cada día por nombre (puede cambiarse a código si quieres)
-    for (let d = 1; d <= 6; d++) {
-      grouped[d].sort((a, b) => {
-        const na = (a.nombre || "").toLowerCase();
-        const nb = (b.nombre || "").toLowerCase();
-        return na.localeCompare(nb, "es");
-      });
-    }
-
-    lastRestructured = grouped;
-    renderRestructured(grouped);
-  }
-
-  function renderRestructured(grouped) {
-    const container = document.getElementById("restructOutput");
-    container.innerHTML = "";
-
-    let hasContent = false;
-
-    for (let d = 1; d <= 6; d++) {
-      const clients = grouped[d] || [];
-      if (!clients.length) continue;
-      hasContent = true;
-
-      const block = document.createElement("div");
-      block.className = "day-block";
-
-      const title = document.createElement("div");
-      title.className = "day-block-title";
-      title.textContent = `DIA ${d} ${dayNames[d]?.toUpperCase() || ""}`;
-      block.appendChild(title);
-
-      clients.forEach((c, idx) => {
-        const row = document.createElement("div");
-        row.className = "day-client";
-        row.textContent = `${idx + 1}. ${c.nombre || "(Sin nombre)"} — Ruta ${c.ruta || "-"} | Código ${c.codigo || "-"}`;
-        block.appendChild(row);
-      });
-
-      container.appendChild(block);
-    }
-
-    if (!hasContent) {
-      container.innerHTML = '<div class="small" style="color:#6B7280;">No hay datos para mostrar. Carga la base TXT y/o agrega clientes.</div>';
-    }
-  }
-
-  function exportToExcelLike() {
-    if (!lastRestructured) {
-      restructureBase();
-    }
-    if (!lastRestructured) return;
-
-    let csv = "DIA;ORDEN;RUTA;CODIGO;NOMBRE;DIRECCION\n";
-
-    for (let d = 1; d <= 6; d++) {
-      const clients = lastRestructured[d] || [];
-      if (!clients.length) continue;
-
-      clients.forEach((c, idx) => {
-        const row = [
-          `DIA ${d} ${dayNames[d] || ""}`,
-          idx + 1,
-          c.ruta || "",
-          c.codigo || "",
-          (c.nombre || "").replace(/;/g, ","),
-          (c.direccion || "").replace(/;/g, ",")
-        ];
-        csv += row.join(";") + "\n";
-      });
-    }
-
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "Base_clientes_reestructurada.csv"; // Excel lo abre sin problema
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
-
-  function openModal() {
-    const backdrop = document.getElementById("modalBackdrop");
-    backdrop.style.display = "flex";
-  }
-
-  function closeModal() {
-    const backdrop = document.getElementById("modalBackdrop");
-    backdrop.style.display = "none";
-    document.getElementById("newRuta").value = document.getElementById("routeInput").value || "";
-    document.getElementById("newCodigo").value = "";
-    document.getElementById("newNombre").value = "";
-    document.getElementById("newDireccion").value = "";
-  }
-
-  function saveNewClientFromModal() {
-    const ruta = document.getElementById("newRuta").value.trim() || document.getElementById("routeInput").value.trim();
-    const codigo = document.getElementById("newCodigo").value.trim();
-    const nombre = document.getElementById("newNombre").value.trim();
-    const direccion = document.getElementById("newDireccion").value.trim();
-
-    if (!nombre) {
-      alert("El nombre del negocio es obligatorio.");
-      return;
-    }
-
-    const newClient = {
-      id: "new-" + Date.now() + "-" + Math.random().toString(16).slice(2),
-      ruta: ruta || "",
-      codigo,
-      nombre,
-      direccion,
-      day: selectedDay
-    };
-
-    clientsAll.push(newClient);
-    closeModal();
-    renderSearchResults();
-    restructureBase();
-  }
-
-  function parseTxtFile(content) {
-    const lines = content.split(/\r?\n/);
-    clientsAll = [];
-
-    lines.forEach((line, index) => {
-      const trimmed = line.trim();
-      if (!trimmed) return;
-
-      // Formato sugerido: RUTA;CODIGO;NOMBRE;DIRECCION;DIA(opcional)
-      const parts = trimmed.split(";");
-      const ruta = (parts[0] || "").trim();
-      const codigo = (parts[1] || "").trim();
-      const nombre = (parts[2] || "").trim();
-      const direccion = (parts[3] || "").trim();
-      let day = parseInt((parts[4] || "").trim(), 10);
-      if (!day || day < 1 || day > 6) day = 1; // si no viene día, Día 1 por defecto
-
-      const client = {
-        id: `base-${index}`,
-        ruta,
-        codigo,
-        nombre,
-        direccion,
-        day
-      };
-
-      clientsAll.push(client);
-    });
-
-    selectedClientId = null;
-    updateSaveButtonState();
-    renderSearchResults();
-    restructureBase();
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    autoDay = getTodayDayNumber();
-    selectedDay = autoDay;
-
-    document.getElementById("daySelect").value = String(selectedDay);
-    updateDayLabels();
-
-    document.getElementById("btnUpload").addEventListener("click", () => {
-      document.getElementById("fileInput").click();
-    });
-
-    document.getElementById("fileInput").addEventListener("change", (e) => {
-      const file = e.target.files[0];
+    function handleFileChange(event) {
+      const file = event.target.files[0];
       if (!file) return;
+
+      if (!file.name.toLowerCase().endsWith(".txt")) {
+        showToast("Archivo inválido. Usa un .txt", true);
+        return;
+      }
+
       const reader = new FileReader();
-      reader.onload = (ev) => {
-        parseTxtFile(ev.target.result);
+      reader.onload = (e) => {
+        const content = e.target.result;
+        const parsed = parseTxtContent(content);
+        if (!parsed.length) {
+          showToast("No se encontraron clientes en el archivo", true);
+          return;
+        }
+        clients = parsed;
+        selectedClientIndex = null;
+        renderSearchResults();
+        showToast("Base de datos cargada (" + clients.length + " clientes)");
+      };
+      reader.onerror = () => {
+        showToast("Error al leer el archivo", true);
       };
       reader.readAsText(file, "utf-8");
-    });
+    }
 
-    document.getElementById("daySelect").addEventListener("change", (e) => {
-      selectedDay = parseInt(e.target.value, 10) || 1;
-      updateDayLabels();
-    });
+    // ====== Búsqueda de clientes ======
+    function renderSearchResults() {
+      const list = document.getElementById("resultList");
+      list.innerHTML = "";
 
-    document.getElementById("searchInput").addEventListener("input", () => {
-      selectedClientId = null;
-      updateSaveButtonState();
-      renderSearchResults();
-    });
-
-    document.getElementById("btnSaveClient").addEventListener("click", handleSaveClientToDay);
-    document.getElementById("btnRestructure").addEventListener("click", restructureBase);
-    document.getElementById("btnExportExcel").addEventListener("click", exportToExcelLike);
-
-    // Modal nuevo cliente
-    document.getElementById("btnNewClient").addEventListener("click", openModal);
-    document.getElementById("btnModalClose").addEventListener("click", closeModal);
-    document.getElementById("btnModalCancel").addEventListener("click", closeModal);
-    document.getElementById("btnModalSave").addEventListener("click", saveNewClientFromModal);
-
-    document.getElementById("modalBackdrop").addEventListener("click", (e) => {
-      if (e.target.id === "modalBackdrop") {
-        closeModal();
+      if (!clients.length) {
+        list.innerHTML = '<div class="empty-state" style="margin:2px;">Carga una base .txt o crea clientes nuevos.</div>';
+        return;
       }
+
+      const query = document.getElementById("searchInput").value.trim().toLowerCase();
+      const routeFilter = document.getElementById("routeInput").value.trim();
+
+      const filtered = clients.map((c, index) => ({ ...c, index }))
+        .filter(c => {
+          const matchesRoute = routeFilter ? String(c.ruta).includes(routeFilter) : true;
+          const matchesQuery = query
+            ? c.nombre.toLowerCase().includes(query) || String(c.ruta).toLowerCase().includes(query)
+            : true;
+          return matchesRoute && matchesQuery;
+        });
+
+      if (!filtered.length) {
+        list.innerHTML = '<div class="empty-state" style="margin:2px;">Sin coincidencias. Ajusta tu búsqueda.</div>';
+        selectedClientIndex = null;
+        document.getElementById("btnSaveClient").disabled = true;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "result-item" + (item.index === selectedClientIndex ? " selected" : "");
+        div.dataset.index = item.index;
+
+        const nameEl = document.createElement("div");
+        nameEl.className = "result-name";
+        nameEl.textContent = item.nombre;
+
+        const metaEl = document.createElement("div");
+        metaEl.className = "result-meta";
+        metaEl.textContent = `Ruta ${item.ruta} · Cod. ${item.codigo}`;
+
+        const addrEl = document.createElement("div");
+        addrEl.className = "result-meta";
+        addrEl.textContent = item.direccion;
+
+        div.appendChild(nameEl);
+        div.appendChild(metaEl);
+        div.appendChild(addrEl);
+
+        div.addEventListener("click", () => {
+          selectedClientIndex = item.index;
+          document.getElementById("btnSaveClient").disabled = false;
+          renderSearchResults(); // para refrescar selección
+        });
+
+        list.appendChild(div);
+      });
+    }
+
+    // ====== Asignar cliente al día ======
+    function saveSelectedClientToDay() {
+      if (selectedClientIndex === null || selectedClientIndex < 0 || selectedClientIndex >= clients.length) {
+        showToast("Selecciona un cliente primero", true);
+        return;
+      }
+      const client = clients[selectedClientIndex];
+      const dayIndex = parseInt(document.getElementById("daySelect").value, 10);
+
+      assignments.push({
+        dayIndex,
+        ruta: client.ruta,
+        codigo: client.codigo,
+        nombre: client.nombre,
+        direccion: client.direccion,
+        timestamp: Date.now()
+      });
+
+      showToast(`Cliente asignado a ${DAY_NAMES[dayIndex]}`);
+      refreshSummaryCount();
+      renderRestructuredTable(); // para ver el cambio de una vez
+    }
+
+    // ====== REESTRUCTURA ======
+    function renderRestructuredTable() {
+      const container = document.getElementById("restructuredContainer");
+      container.innerHTML = "";
+
+      if (!assignments.length) {
+        container.innerHTML = '<div class="empty-state">Aún no hay clientes asignados. Usa "Guardar en día" para agregar clientes por día.</div>';
+        refreshSummaryCount();
+        return;
+      }
+
+      // Ordenar por día y luego por timestamp (orden de agregado)
+      const sorted = [...assignments].sort((a, b) => {
+        if (a.dayIndex !== b.dayIndex) return a.dayIndex - b.dayIndex;
+        return a.timestamp - b.timestamp;
+      });
+
+      // Agrupar por día
+      const groups = {};
+      sorted.forEach(item => {
+        if (!groups[item.dayIndex]) groups[item.dayIndex] = [];
+        groups[item.dayIndex].push(item);
+      });
+
+      Object.keys(groups).sort((a, b) => a - b).forEach(dayKey => {
+        const dayIndex = parseInt(dayKey, 10);
+        const dayClients = groups[dayIndex];
+
+        const block = document.createElement("div");
+        block.className = "day-block";
+
+        const header = document.createElement("div");
+        header.className = "day-block-header";
+        const diaNum = dayIndex + 1; // Día 1 = Lunes
+        const title = document.createElement("div");
+        title.innerHTML = `<strong>DÍA ${diaNum} – ${DAY_NAMES[dayIndex].toUpperCase()}</strong>`;
+        const count = document.createElement("span");
+        count.textContent = `${dayClients.length} cliente${dayClients.length === 1 ? "" : "s"}`;
+
+        header.appendChild(title);
+        header.appendChild(count);
+
+        const table = document.createElement("table");
+        table.className = "day-table";
+        const thead = document.createElement("thead");
+        thead.innerHTML = `
+          <tr>
+            <th>#</th>
+            <th>Negocio</th>
+            <th>Ruta</th>
+            <th>Código</th>
+            <th>Dirección</th>
+          </tr>
+        `;
+        const tbody = document.createElement("tbody");
+
+        dayClients.forEach((c, idx) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${idx + 1}</td>
+            <td>${c.nombre}</td>
+            <td>${c.ruta}</td>
+            <td>${c.codigo}</td>
+            <td>${c.direccion}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+
+        block.appendChild(header);
+        block.appendChild(table);
+        container.appendChild(block);
+      });
+
+      refreshSummaryCount();
+    }
+
+    // ====== Modal nuevo cliente ======
+    function openModal() {
+      const backdrop = document.getElementById("modalBackdrop");
+      const routeInputTop = document.getElementById("routeInput");
+      const newRoute = document.getElementById("newRoute");
+
+      // Prellenar ruta con la ruta del encabezado si existe
+      newRoute.value = routeInputTop.value.trim();
+
+      backdrop.style.display = "flex";
+      document.getElementById("newCode").value = "";
+      document.getElementById("newName").value = "";
+      document.getElementById("newAddress").value = "";
+      document.getElementById("newName").focus();
+    }
+
+    function closeModal() {
+      const backdrop = document.getElementById("modalBackdrop");
+      backdrop.style.display = "none";
+    }
+
+    function saveNewClient() {
+      const ruta = document.getElementById("newRoute").value.trim();
+      const codigo = document.getElementById("newCode").value.trim();
+      const nombre = document.getElementById("newName").value.trim();
+      const direccion = document.getElementById("newAddress").value.trim();
+
+      if (!ruta || !codigo || !nombre || !direccion) {
+        showToast("Completa todos los campos del cliente", true);
+        return;
+      }
+
+      const newClient = { ruta, codigo, nombre, direccion };
+      clients.push(newClient);
+
+      // Asignar automáticamente al día seleccionado
+      const dayIndex = parseInt(document.getElementById("daySelect").value, 10);
+      assignments.push({
+        dayIndex,
+        ...newClient,
+        timestamp: Date.now()
+      });
+
+      closeModal();
+      showToast("Cliente creado y asignado al día");
+
+      // Actualizar lista de búsqueda y tabla reestructurada
+      selectedClientIndex = clients.length - 1;
+      document.getElementById("btnSaveClient").disabled = false;
+      renderSearchResults();
+      renderRestructuredTable();
+    }
+
+    // ====== Inicialización ======
+    document.addEventListener("DOMContentLoaded", () => {
+      // Día actual
+      const todayIndex = getTodayDayIndex();
+      const daySelect = document.getElementById("daySelect");
+      daySelect.value = String(todayIndex);
+      updateTodayBadge();
+
+      // Eventos
+      document.getElementById("dbInput").addEventListener("change", handleFileChange);
+      document.getElementById("searchInput").addEventListener("input", renderSearchResults);
+      document.getElementById("routeInput").addEventListener("input", renderSearchResults);
+      document.getElementById("btnSaveClient").addEventListener("click", saveSelectedClientToDay);
+      document.getElementById("btnRestruct").addEventListener("click", () => {
+        renderRestructuredTable();
+        showToast("Tabla reestructurada actualizada");
+      });
+
+      document.getElementById("btnNewClient").addEventListener("click", openModal);
+      document.getElementById("modalCloseBtn").addEventListener("click", closeModal);
+      document.getElementById("modalCancelBtn").addEventListener("click", closeModal);
+      document.getElementById("modalSaveBtn").addEventListener("click", saveNewClient);
+
+      document.getElementById("modalBackdrop").addEventListener("click", (e) => {
+        if (e.target.id === "modalBackdrop") {
+          closeModal();
+        }
+      });
+
+      // Render inicial
+      renderSearchResults();
+      renderRestructuredTable();
     });
-  });
-</script>
+  </script>
 </body>
 </html>
