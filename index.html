@@ -9,11 +9,11 @@
       --bg: #F2F2F7;
       --card: #FFFFFF;
       --border: #D0D5DD;
-      --accent: #0F62A9;   /* Azul SAP */
+      --accent: #0F62A9;   /* Azul tipo SAP */
       --accent-soft: #E3F2FF;
       --text-main: #111827;
       --text-muted: #6B7280;
-      --danger: #B42318;
+      --success: #15803D;
       --radius-lg: 16px;
       --radius-md: 10px;
     }
@@ -116,7 +116,7 @@
       box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
       flex: 1;
     }
 
@@ -126,9 +126,8 @@
       align-items: center;
     }
 
-    .row.wrap {
-      flex-wrap: wrap;
-      align-items: flex-start;
+    .row.space {
+      justify-content: space-between;
     }
 
     .field-label {
@@ -158,31 +157,65 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
-      flex: 1;
     }
 
-    .day-info {
+    .tag-auto {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
       font-size: 11px;
-      color: var(--text-muted);
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #E5F0FA;
+      color: var(--accent);
     }
 
-    .search-group {
+    .search-section {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      flex: 2;
+      gap: 6px;
+    }
+
+    .search-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .icon-plus {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px dashed var(--accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--accent);
+      cursor: pointer;
     }
 
     .big-box {
-      margin-top: 4px;
       border-radius: var(--radius-lg);
       border: 1px solid var(--border);
       background: #F9FAFB;
       padding: 6px;
-      min-height: 170px;
+      min-height: 190px;
       max-height: 260px;
       overflow-y: auto;
       font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .search-input-inner {
+      width: 100%;
+    }
+
+    .results-list {
+      flex: 1;
+      overflow-y: auto;
     }
 
     .client-item {
@@ -218,12 +251,12 @@
 
     .actions-row {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 6px;
+      justify-content: flex-end;
+      gap: 6px;
+      margin-top: 4px;
     }
 
-    .primary-btn, .ghost-btn {
+    .primary-btn, .secondary-btn {
       border-radius: 999px;
       font-size: 13px;
       padding: 7px 14px;
@@ -244,23 +277,18 @@
       cursor: not-allowed;
     }
 
-    .ghost-btn {
-      background: transparent;
+    .secondary-btn {
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      background: #FFFFFF;
       color: var(--accent);
-      border: 1px solid var(--accent-soft);
+      justify-content: center;
+      flex: 1;
     }
 
-    .icon-plus {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: 1px dashed var(--accent);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      color: var(--accent);
-      cursor: pointer;
+    .secondary-btn.excel {
+      border-color: var(--success);
+      color: var(--success);
     }
 
     .section-title {
@@ -268,34 +296,7 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--text-muted);
-      margin-top: 6px;
-    }
-
-    .restruct-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
       margin-top: 4px;
-    }
-
-    .secondary-btn {
-      flex: 1;
-      border-radius: 999px;
-      border: 1px solid var(--accent);
-      background: #FFFFFF;
-      font-size: 13px;
-      padding: 8px 10px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      color: var(--accent);
-    }
-
-    .secondary-btn.excel {
-      border-color: #15803D;
-      color: #15803D;
     }
 
     .restruct-box {
@@ -330,6 +331,10 @@
       margin-top: 4px;
       font-size: 10px;
       color: var(--text-muted);
+    }
+
+    .small {
+      font-size: 11px;
     }
 
     /* Modal nuevo cliente */
@@ -388,25 +393,6 @@
       gap: 6px;
       margin-top: 6px;
     }
-
-    .small {
-      font-size: 11px;
-    }
-
-    .tag-auto {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: #E5F0FA;
-      color: var(--accent);
-    }
-
-    .hidden {
-      display: none !important;
-    }
   </style>
 </head>
 <body>
@@ -414,92 +400,77 @@
   <!-- Barra superior -->
   <header class="top-bar">
     <div class="top-left">
-      <button class="icon-button" id="btnUpload" title="Cargar base (TXT)">
-        📂
-      </button>
-      <input type="file" id="fileInput" accept=".txt" style="display:none">
+      <button class="icon-button" id="btnUpload" title="Cargar base (TXT)">📂</button>
+      <input type="file" id="fileInput" accept=".txt" style="display:none" />
       <div class="route-box">
         <span class="route-label">Ruta</span>
         <input type="text" id="routeInput" class="route-input" placeholder="17029" />
       </div>
     </div>
-    <div class="title">
-      REGISTRO DE CLIENTES
-    </div>
+    <div class="title">REGISTRO DE CLIENTES</div>
   </header>
 
   <!-- Tarjeta principal -->
   <main class="main-card">
-    <!-- Día + buscador -->
-    <div class="row wrap">
-      <div class="day-select-group">
-        <div class="row" style="justify-content: space-between; gap:4px;">
-          <span class="field-label">Día de visita</span>
-          <span class="tag-auto" id="autoDayTag">
-            ⏱ Auto: <span id="autoDayName">Lunes</span>
-          </span>
-        </div>
-        <select id="daySelect">
-          <option value="1">Día 1 — Lunes</option>
-          <option value="2">Día 2 — Martes</option>
-          <option value="3">Día 3 — Miércoles</option>
-          <option value="4">Día 4 — Jueves</option>
-          <option value="5">Día 5 — Viernes</option>
-          <option value="6">Día 6 — Sábado</option>
-        </select>
-        <div class="day-info">
-          Detecta automáticamente el día actual, pero puedes cambiarlo para agregar clientes a otro día.
+    <!-- Selección de día -->
+    <div class="day-select-group">
+      <div class="row space">
+        <span class="field-label">Día de visita</span>
+        <span class="tag-auto">⏱ Auto: <span id="autoDayName">Lunes</span></span>
+      </div>
+      <select id="daySelect">
+        <option value="1">Día 1 — Lunes</option>
+        <option value="2">Día 2 — Martes</option>
+        <option value="3">Día 3 — Miércoles</option>
+        <option value="4">Día 4 — Jueves</option>
+        <option value="5">Día 5 — Viernes</option>
+        <option value="6">Día 6 — Sábado</option>
+      </select>
+      <div class="small" style="color:var(--text-muted);">
+        Detecta el día actual automáticamente, pero puedes cambiarlo para agregar clientes a otros días.
+      </div>
+    </div>
+
+    <!-- Buscar / seleccionar cliente -->
+    <section class="search-section">
+      <div class="search-header">
+        <span class="field-label">Buscar cliente</span>
+        <div class="row" style="gap:6px;align-items:center;">
+          <span class="small" style="color:var(--text-muted);">Nuevo cliente</span>
+          <button class="icon-plus" id="btnNewClient" title="Crear cliente nuevo">+</button>
         </div>
       </div>
-
-      <div class="search-group">
-        <label class="field-label" for="searchInput">Buscar cliente</label>
-        <input id="searchInput" type="text" placeholder="Ruta, código o nombre del negocio…" />
-      </div>
-
-      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:12px;width:100%;">
-        <div style="width:100%; display:flex; justify-content:space-between; align-items:center;">
-          <span class="field-label">Seleccionar cliente</span>
-          <div class="row" style="gap:6px; align-items:center;">
-            <span class="small" style="color:var(--text-muted);">Nuevo cliente</span>
-            <button class="icon-plus" id="btnNewClient" title="Crear cliente nuevo">+</button>
-          </div>
+      <div class="big-box">
+        <div class="search-input-inner">
+          <input id="searchInput" type="text" placeholder="Ruta, código o nombre del negocio…" />
         </div>
-        <div class="big-box" id="searchResults">
+        <div id="searchResults" class="results-list">
           <div class="small" style="color:var(--text-muted);">
-            Carga la base TXT, selecciona el día y escribe para buscar por ruta, código o nombre.
+            Carga la base TXT y escribe para buscar clientes por ruta, código o nombre.
           </div>
         </div>
         <div class="actions-row">
-          <button class="ghost-btn" id="btnClearSelection">
-            Limpiar selección
-          </button>
           <button class="primary-btn" id="btnSaveClient" disabled>
             Guardar en <span id="labelCurrentDay">Día 1 — Lunes</span>
           </button>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- Reestructura -->
     <div class="section-title">Reestructura por día</div>
-    <div class="restruct-row">
-      <button class="secondary-btn" id="btnRestructure">
-        🧩 REESTRUCTURA
-      </button>
-      <button class="secondary-btn excel" id="btnExportExcel">
-        📊 Excel
-      </button>
+    <div class="row" style="gap:8px;">
+      <button class="secondary-btn" id="btnRestructure">🧩 REESTRUCTURA</button>
+      <button class="secondary-btn excel" id="btnExportExcel">📊 Excel</button>
     </div>
     <div class="restruct-box" id="restructOutput">
       <div class="small" style="color:var(--text-muted);">
-        Aquí se mostrará la nueva base ordenada por día:
-        DIA 1 LUNES (1,2,3…), DIA 2 MARTES, … hasta SÁBADO.
+        Aquí se mostrará la base nueva ordenada por día: DIA 1 LUNES (1,2,3,4,5…), DIA 2 MARTES, hasta SÁBADO.
       </div>
     </div>
     <div class="footer-note">
-      • La base original puede venir desordenada y con duplicados; la reestructura dejará un solo registro por cliente, ordenado por día.  
-      • El archivo Excel seguirá el mismo orden para compartir la nueva base.
+      • La base TXT puede venir desordenada y con duplicados; la REESTRUCTURA deja un único registro por cliente, ordenado por día. <br>
+      • El archivo Excel respeta el mismo orden para compartir la nueva base ya limpia.
     </div>
   </main>
 </div>
@@ -510,9 +481,7 @@
     <div class="modal-header">
       <div>
         <div class="modal-title">Nuevo cliente</div>
-        <div class="small" style="color:var(--text-muted);">
-          Se asignará al <span id="modalDayLabel">Día 1 — Lunes</span>.
-        </div>
+        <div class="small" style="color:var(--text-muted);">Se asignará al <span id="modalDayLabel">Día 1 — Lunes</span>.</div>
       </div>
       <button class="modal-close" id="btnModalClose">&times;</button>
     </div>
@@ -535,14 +504,14 @@
       </div>
     </div>
     <div class="modal-actions">
-      <button class="ghost-btn small" id="btnModalCancel">Cancelar</button>
+      <button class="secondary-btn small" id="btnModalCancel">Cancelar</button>
       <button class="primary-btn small" id="btnModalSave">Guardar</button>
     </div>
   </div>
 </div>
 
 <script>
-  // --- Datos en memoria ---
+  // Nombres de días (1 a 6)
   const dayNames = {
     1: "Lunes",
     2: "Martes",
@@ -552,14 +521,14 @@
     6: "Sábado"
   };
 
-  let clientsAll = [];        // Toda la base (TXT + nuevos)
-  let selectedDay = 1;        // Día actual para asignar
-  let autoDay = 1;            // Día detectado automáticamente
+  let clientsAll = [];       // Base completa (TXT + nuevos)
+  let selectedDay = 1;       // Día seleccionado en la app
+  let autoDay = 1;           // Día detectado por fecha del sistema
   let selectedClientId = null;
-  let lastRestructured = null; // cache última reestructura
+  let lastRestructured = null; // Cache de última reestructura
 
   function getTodayDayNumber() {
-    const d = new Date().getDay(); // 0-domingo, 1-lunes... 6-sábado
+    const d = new Date().getDay(); // 0-dom,1-lun,...,6-sab
     switch (d) {
       case 1: return 1; // lunes
       case 2: return 2;
@@ -567,17 +536,16 @@
       case 4: return 4;
       case 5: return 5;
       case 6: return 6; // sábado
-      default: return 1; // domingo -> tratar como día 1
+      default: return 1; // domingo -> Día 1
     }
   }
 
   function updateDayLabels() {
+    const autoDayName = document.getElementById("autoDayName");
     const labelCurrentDay = document.getElementById("labelCurrentDay");
     const modalDayLabel = document.getElementById("modalDayLabel");
-    const autoDayName = document.getElementById("autoDayName");
 
     autoDayName.textContent = dayNames[autoDay] || "Lunes";
-
     const text = `Día ${selectedDay} — ${dayNames[selectedDay] || ""}`;
     labelCurrentDay.textContent = text;
     modalDayLabel.textContent = text;
@@ -587,10 +555,11 @@
     const container = document.getElementById("searchResults");
     const searchInput = document.getElementById("searchInput");
     const term = searchInput.value.trim().toLowerCase();
+
     container.innerHTML = "";
 
     if (!clientsAll.length) {
-      container.innerHTML = '<div class="small" style="color:#6B7280;">Carga primero la base TXT para buscar clientes.</div>';
+      container.innerHTML = '<div class="small" style="color:#6B7280;">Carga primero la base TXT o crea un cliente nuevo.</div>';
       return;
     }
 
@@ -624,8 +593,7 @@
 
       const meta = document.createElement("div");
       meta.className = "client-meta";
-      meta.textContent =
-        `Ruta ${c.ruta || "-"} | Código ${c.codigo || "-"} | Día ${c.day || "-"} ${dayNames[c.day] || ""}`;
+      meta.textContent = `Ruta ${c.ruta || "-"} | Código ${c.codigo || "-"} | Día ${c.day || "-"} ${dayNames[c.day] || ""}`;
 
       item.appendChild(nombre);
       item.appendChild(meta);
@@ -633,7 +601,7 @@
       item.addEventListener("click", () => {
         selectedClientId = c.id;
         updateSaveButtonState();
-        renderSearchResults(); // refrescar para marcar activo
+        renderSearchResults(); // Refrescar estilos
       });
 
       container.appendChild(item);
@@ -645,24 +613,29 @@
     btn.disabled = !selectedClientId;
   }
 
+  function handleSaveClientToDay() {
+    if (!selectedClientId) return;
+    const client = clientsAll.find(c => c.id === selectedClientId);
+    if (!client) return;
+
+    client.day = selectedDay; // asignar al día seleccionado
+    restructureBase();
+    alert(`Cliente asignado a Día ${selectedDay} — ${dayNames[selectedDay] || ""}.`);
+  }
+
   function restructureBase() {
-    // Deduplicar por código (o nombre+dirección si no hay código) y agrupar por día
+    // Dedupe: por código; si no existe código, por (nombre + direccion)
     const uniqueMap = new Map();
 
-    // Recorremos al revés para que el último cambio sea el que manda
+    // Recorremos de atrás hacia adelante para que el último cambio tenga prioridad
     for (let i = clientsAll.length - 1; i >= 0; i--) {
       const c = clientsAll[i];
-      const key =
-        (c.codigo && String(c.codigo).trim()) ||
-        (c.nombre || "") + "|" + (c.direccion || "");
+      const key = (c.codigo && String(c.codigo).trim()) || ((c.nombre || "") + "|" + (c.direccion || ""));
       if (!key.trim()) continue;
 
       if (!uniqueMap.has(key)) {
-        // Asegurar día válido
         let day = parseInt(c.day, 10);
-        if (!day || day < 1 || day > 6) {
-          day = 1;
-        }
+        if (!day || day < 1 || day > 6) day = 1;
         uniqueMap.set(key, { ...c, day });
       }
     }
@@ -673,7 +646,7 @@
       grouped[d].push(client);
     }
 
-    // Podemos ordenar por nombre
+    // Ordenar dentro de cada día por nombre (puede cambiarse a código si quieres)
     for (let d = 1; d <= 6; d++) {
       grouped[d].sort((a, b) => {
         const na = (a.nombre || "").toLowerCase();
@@ -708,8 +681,7 @@
       clients.forEach((c, idx) => {
         const row = document.createElement("div");
         row.className = "day-client";
-        row.textContent =
-          `${idx + 1}. ${c.nombre || "(Sin nombre)"} — Ruta ${c.ruta || "-"} | Código ${c.codigo || "-"}`;
+        row.textContent = `${idx + 1}. ${c.nombre || "(Sin nombre)"} — Ruta ${c.ruta || "-"} | Código ${c.codigo || "-"}`;
         block.appendChild(row);
       });
 
@@ -717,8 +689,7 @@
     }
 
     if (!hasContent) {
-      container.innerHTML =
-        '<div class="small" style="color:#6B7280;">No hay datos para reestructurar. Carga la base y/o agrega clientes.</div>';
+      container.innerHTML = '<div class="small" style="color:#6B7280;">No hay datos para mostrar. Carga la base TXT y/o agrega clientes.</div>';
     }
   }
 
@@ -751,7 +722,7 @@
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "Base_clientes_reestructurada.csv"; // Excel lo abre sin problemas
+    a.download = "Base_clientes_reestructurada.csv"; // Excel lo abre sin problema
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -798,16 +769,6 @@
     restructureBase();
   }
 
-  function handleSaveClientToDay() {
-    if (!selectedClientId) return;
-    const client = clientsAll.find(c => c.id === selectedClientId);
-    if (!client) return;
-
-    client.day = selectedDay;
-    restructureBase();
-    alert(`Cliente asignado a Día ${selectedDay} — ${dayNames[selectedDay] || ""}.`);
-  }
-
   function parseTxtFile(content) {
     const lines = content.split(/\r?\n/);
     clientsAll = [];
@@ -816,17 +777,14 @@
       const trimmed = line.trim();
       if (!trimmed) return;
 
-      // Formato asumido: RUTA;CODIGO;NOMBRE;DIRECCION;DIA
+      // Formato sugerido: RUTA;CODIGO;NOMBRE;DIRECCION;DIA(opcional)
       const parts = trimmed.split(";");
       const ruta = (parts[0] || "").trim();
       const codigo = (parts[1] || "").trim();
       const nombre = (parts[2] || "").trim();
       const direccion = (parts[3] || "").trim();
       let day = parseInt((parts[4] || "").trim(), 10);
-
-      if (!day || day < 1 || day > 6) {
-        day = 1; // si no viene día, asignamos Día 1 (lunes) por defecto
-      }
+      if (!day || day < 1 || day > 6) day = 1; // si no viene día, Día 1 por defecto
 
       const client = {
         id: `base-${index}`,
@@ -840,11 +798,12 @@
       clientsAll.push(client);
     });
 
+    selectedClientId = null;
+    updateSaveButtonState();
     renderSearchResults();
     restructureBase();
   }
 
-  // --- Eventos iniciales ---
   document.addEventListener("DOMContentLoaded", () => {
     autoDay = getTodayDayNumber();
     selectedDay = autoDay;
@@ -872,12 +831,6 @@
     });
 
     document.getElementById("searchInput").addEventListener("input", () => {
-      selectedClientId = null;
-      updateSaveButtonState();
-      renderSearchResults();
-    });
-
-    document.getElementById("btnClearSelection").addEventListener("click", () => {
       selectedClientId = null;
       updateSaveButtonState();
       renderSearchResults();
