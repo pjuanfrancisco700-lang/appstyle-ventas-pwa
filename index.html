@@ -2,1085 +2,903 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
+  <title>Registro de Clientes — Ruta</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <title>CONTROL Ventas</title>
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="CONTROL Ventas" />
-  <meta name="theme-color" content="#f5f5f7" />
   <style>
     :root {
-      color-scheme: light;
-      --bg: #f3f4f6;
-      --shell-bar: #4b5563;
-      --shell-bar-text: #ffffff;
-      --card: #ffffff;
-      --accent: #4b5563;
-      --accent-soft: #e5e7eb;
-      --text-main: #0b1f33;
-      --text-soft: #5f7387;
-      --border-soft: #d1d5db;
-      --shadow-soft: 0 1px 3px rgba(0,0,0,0.08);
+      --bg: #F2F2F7;
+      --card: #FFFFFF;
+      --border: #D0D5DD;
+      --accent: #0F62A9;   /* Azul SAP */
+      --accent-soft: #E3F2FF;
+      --text-main: #111827;
+      --text-muted: #6B7280;
+      --danger: #B42318;
+      --radius-lg: 16px;
+      --radius-md: 10px;
     }
 
     * {
       box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     body {
       margin: 0;
-      font-family: "72", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: var(--bg);
       color: var(--text-main);
-      min-height: 100vh;
       display: flex;
       justify-content: center;
     }
 
     .app-shell {
       width: 100%;
-      max-width: 520px;
-      padding: 0;
+      max-width: 430px; /* pensado para smartphone */
+      min-height: 100vh;
+      padding: 12px;
       display: flex;
       flex-direction: column;
-      border-radius: 0;
-      overflow: hidden;
-      box-shadow: 0 0 0 1px rgba(0,0,0,0.05);
-      background: var(--bg);
+      gap: 12px;
     }
 
-    /* Shell bar estilo SAP */
-    header {
-      height: 44px;
-      background: var(--shell-bar);
-      color: var(--shell-bar-text);
+    .top-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 12px;
-      box-shadow: 0 1px 0 rgba(0,0,0,0.18);
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      padding: 10px 12px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+      border: 1px solid var(--border);
+      gap: 10px;
     }
 
-    .app-title {
+    .top-left {
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .app-icon {
-      width: 26px;
-      height: 26px;
-      border-radius: 4px;
-      background: linear-gradient(135deg, #6b7280, #374151);
-      display: flex;
+    .icon-button {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      box-shadow: none;
-      position: relative;
-      overflow: hidden;
+      background: #F9FAFB;
+      cursor: pointer;
+      font-size: 18px;
     }
 
-    .app-icon::before,
-    .app-icon::after,
-    .app-icon-dot {
-      display: none;
+    .icon-button:hover {
+      background: #EEF2FF;
     }
 
-    .app-title-text {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .app-title-text h1 {
-      margin: 0;
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0;
-    }
-
-    .app-title-text span {
-      font-size: 11px;
-      text-transform: none;
-      letter-spacing: 0;
-      opacity: 0.85;
-    }
-
-    .pill-date {
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 2px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.3);
-      color: #e5f2ff;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .pill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #92e07b;
-      box-shadow: none;
-    }
-
-    /* Contenido principal tipo Fiori */
-    .glass-card {
-      margin: 0;
-      border-radius: 0;
-      background: transparent;
-      box-shadow: none;
-      border: none;
-      padding: 8px 12px 16px;
-    }
-
-    .summary-row {
-      display: grid;
-      grid-template-columns: 1.6fr 1.1fr;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .summary-main {
-      background: var(--card);
-      border-radius: 4px;
-      padding: 10px 10px 8px;
-      color: var(--text-main);
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--border-soft);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .summary-main::after {
-      display: none;
-    }
-
-    .summary-main-label {
-      font-size: 11px;
-      text-transform: none;
-      letter-spacing: 0;
-      color: var(--text-soft);
-      margin-bottom: 2px;
-    }
-
-    .summary-main-value {
-      font-size: 20px;
-      font-weight: 600;
-      letter-spacing: 0;
-    }
-
-    .summary-main-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 4px;
-      font-size: 11px;
-      color: var(--text-soft);
-    }
-
-    .summary-pill {
-      font-size: 11px;
-      padding: 2px 6px;
-      border-radius: 2px;
-      background: var(--accent-soft);
-      border: 1px solid #b3d3ff;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      color: var(--text-main);
-    }
-
-    .summary-pill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--accent);
-    }
-
-    .summary-side {
-      display: grid;
-      gap: 6px;
-    }
-
-    .chip {
-      background: var(--card);
-      border-radius: 4px;
-      padding: 6px 8px;
-      border: 1px solid var(--border-soft);
+    .route-box {
       display: flex;
       flex-direction: column;
       gap: 2px;
-      box-shadow: var(--shadow-soft);
     }
 
-    .chip-label {
+    .route-label {
       font-size: 11px;
-      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
     }
 
-    .chip-value {
+    .route-input {
+      border: none;
+      border-bottom: 1px solid var(--border);
       font-size: 13px;
-      font-weight: 500;
+      padding: 2px 0;
+      width: 90px;
+      outline: none;
+      background: transparent;
+    }
+
+    .title {
+      font-size: 13px;
+      text-align: right;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+
+    .main-card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      padding: 10px 10px 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .row.wrap {
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    .field-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: 7px 9px;
+      font-size: 13px;
+      outline: none;
+      background: #F9FAFB;
+    }
+
+    select:focus, input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(15, 98, 169, 0.25);
+      background: #FFFFFF;
+    }
+
+    .day-select-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .day-info {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .search-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 2;
+    }
+
+    .big-box {
+      margin-top: 4px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: #F9FAFB;
+      padding: 6px;
+      min-height: 170px;
+      max-height: 260px;
+      overflow-y: auto;
+      font-size: 13px;
+    }
+
+    .client-item {
+      padding: 6px 8px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      cursor: pointer;
+    }
+
+    .client-item:nth-child(odd) {
+      background: #F3F4F6;
+    }
+
+    .client-item:nth-child(even) {
+      background: #E5F0FA;
+    }
+
+    .client-item.active {
+      outline: 2px solid var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .client-name {
+      font-weight: 600;
+    }
+
+    .client-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .actions-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    .primary-btn, .ghost-btn {
+      border-radius: 999px;
+      font-size: 13px;
+      padding: 7px 14px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .primary-btn {
+      background: var(--accent);
+      color: #FFFFFF;
+    }
+
+    .primary-btn:disabled {
+      background: #9CA3AF;
+      cursor: not-allowed;
+    }
+
+    .ghost-btn {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent-soft);
+    }
+
+    .icon-plus {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px dashed var(--accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--accent);
+      cursor: pointer;
     }
 
     .section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 10px 2px 4px;
-      font-size: 12px;
-      color: var(--text-soft);
-      font-weight: 600;
+      font-size: 11px;
       text-transform: uppercase;
-    }
-
-    .section-title span {
-      font-size: 11px;
-      padding: 2px 6px;
-      border-radius: 2px;
-      background: #eef3f8;
-      border: 1px solid #d5dadd;
-      text-transform: none;
-      font-weight: 400;
-    }
-
-    form {
-      display: grid;
-      gap: 6px;
-      margin-bottom: 8px;
-      padding: 8px 8px 6px;
-      background: var(--card);
-      border-radius: 4px;
-      border: 1px solid var(--border-soft);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    label {
-      font-size: 11px;
-      color: var(--text-soft);
-    }
-
-    input, textarea {
-      border-radius: 2px;
-      border: 1px solid var(--border-soft);
-      padding: 6px 8px;
-      font-size: 13px;
-      font-family: inherit;
-      background: #ffffff;
-      outline: none;
-      transition: border-color 0.12s ease, box-shadow 0.12s ease;
-    }
-
-    input:focus, textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(10,110,209,0.25);
-    }
-
-    input[type="date"] {
-      font-size: 13px;
-    }
-
-    textarea {
-      min-height: 40px;
-      resize: vertical;
-      max-height: 88px;
-    }
-
-    .row-inline {
-      display: grid;
-      grid-template-columns: 1.2fr 0.9fr;
-      gap: 8px;
-    }
-
-    .btn-primary {
-      margin-top: 4px;
-      width: 140px;
-      justify-self: flex-end;
-      border-radius: 2px;
-      padding: 6px 10px;
-      border: none;
-      font-size: 13px;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      background: var(--accent);
-      color: #ffffff;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.16);
-      cursor: pointer;
-    }
-
-    .btn-primary:active {
-      transform: translateY(1px);
-      box-shadow: 0 0 0 rgba(0,0,0,0.2);
-    }
-
-    .btn-icon {
-      width: 16px;
-      height: 16px;
-      border-radius: 2px;
-      border: 1px solid rgba(255,255,255,0.7);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-    }
-
-    .list-container {
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
       margin-top: 6px;
-      border-radius: 4px;
-      background: var(--card);
-      border: 1px solid var(--border-soft);
-      padding: 6px 6px 4px;
-      max-height: 260px;
-      overflow: auto;
-      box-shadow: var(--shadow-soft);
     }
 
-    .empty-state {
-      font-size: 12px;
-      color: var(--text-soft);
-      padding: 8px 6px 6px;
-      text-align: center;
-    }
-
-    .sale-item {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 4px 10px;
-      padding: 6px 6px;
-      border-radius: 2px;
-      background: #ffffff;
-      border-bottom: 1px solid #edf0f2;
-      margin-bottom: 2px;
-    }
-
-    .sale-main {
+    .restruct-row {
       display: flex;
-      flex-direction: column;
-      gap: 1px;
-    }
-
-    .sale-client {
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .sale-note {
-      font-size: 11px;
-      color: var(--text-soft);
-    }
-
-    .sale-meta {
-      font-size: 11px;
-      color: var(--text-soft);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .dot-soft {
-      width: 4px;
-      height: 4px;
-      border-radius: 999px;
-      background: rgba(148,163,184,0.9);
-    }
-
-    .sale-amount {
-      font-size: 14px;
-      font-weight: 600;
-      align-self: center;
-      white-space: nowrap;
-    }
-
-    .badge-date {
-      font-size: 10px;
-      padding: 2px 4px;
-      border-radius: 2px;
-      background: #eef3f8;
-      border: 1px solid #d5dadd;
-    }
-
-    .footer-hint {
-      margin-top: 10px;
-      text-align: left;
-      font-size: 10px;
-      color: var(--text-soft);
-      padding: 4px 2px 0;
-    }
-
-    .vendor-header-row {
-      align-items: center;
       gap: 8px;
+      align-items: center;
+      margin-top: 4px;
     }
 
-    .mini-link-button {
-      border: none;
-      background: transparent;
-      border-radius: 2px;
-      padding: 4px 6px;
-      font-size: 11px;
-      color: var(--accent);
+    .secondary-btn {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      background: #FFFFFF;
+      font-size: 13px;
+      padding: 8px 10px;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      cursor: pointer;
+      justify-content: center;
+      gap: 6px;
+      color: var(--accent);
     }
 
-    .mini-link-button:active {
-      background: #e5e7eb;
+    .secondary-btn.excel {
+      border-color: #15803D;
+      color: #15803D;
     }
 
-    #nuevoClienteBtn {
-      padding: 6px 12px;
+    .restruct-box {
+      margin-top: 4px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: #F9FAFB;
+      padding: 8px;
+      min-height: 130px;
+      max-height: 230px;
+      overflow-y: auto;
       font-size: 12px;
+    }
+
+    .day-block {
+      margin-bottom: 6px;
+    }
+
+    .day-block-title {
       font-weight: 600;
-      border-radius: 4px;
-      border: 1px solid var(--border-soft);
-      background: #e5e7eb;
-      color: var(--text-main);
+      color: var(--accent);
+      font-size: 12px;
+      margin-bottom: 3px;
     }
 
-    #nuevoClienteBtn:active {
-      background: #d1d5db;
+    .day-client {
+      padding-left: 10px;
+      line-height: 1.4;
     }
 
-    .backdrop {
+    .footer-note {
+      margin-top: 4px;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    /* Modal nuevo cliente */
+    .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(15,23,42,0.35);
+      background: rgba(15, 23, 42, 0.35);
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 16px;
-      z-index: 40;
+      z-index: 20;
     }
 
-    .backdrop.is-visible {
-      display: flex;
-    }
-
-    .dialog {
-      width: 100%;
-      max-width: 360px;
-      background: var(--card);
-      border-radius: 4px;
+    .modal {
+      width: 90%;
+      max-width: 380px;
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
       padding: 14px 14px 12px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
-      border: 1px solid var(--border-soft);
+      border: 1px solid var(--border);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.28);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
-    .dialog h2 {
-      margin: 0 0 8px;
-      font-size: 15px;
-      letter-spacing: 0;
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .dialog-actions {
-      margin-top: 10px;
+    .modal-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .modal-close {
+      border: none;
+      background: transparent;
+      font-size: 18px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .modal-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .modal-actions {
       display: flex;
       justify-content: flex-end;
       gap: 6px;
+      margin-top: 6px;
     }
 
-    .btn-secondary {
-      border-radius: 2px;
-      padding: 6px 10px;
-      border: 1px solid var(--border-soft);
-      background: #f4f7fa;
-      font-size: 12px;
-      color: var(--text-soft);
-      cursor: pointer;
+    .small {
+      font-size: 11px;
     }
 
-    .btn-secondary:active {
-      background: #e3e8ef;
+    .tag-auto {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #E5F0FA;
+      color: var(--accent);
     }
 
-    @media (max-width: 380px) {
-      .summary-row {
-        grid-template-columns: 1fr;
-      }
+    .hidden {
+      display: none !important;
     }
   </style>
 </head>
 <body>
-  <div class="app-shell">
-    <div class="glass-card">
-      <header>
-        <div class="app-title">
-          <div class="app-icon" aria-hidden="true">
-            <div class="app-icon-dot"></div>
-          </div>
-          <div class="app-title-text">
-            <h1>CONTROL Ventas</h1>
-            <span></span>
-          </div>
-        </div>
-        <div class="pill-date">
-          <span class="pill-dot"></span>
-          <span id="todayLabel">Hoy</span>
-        </div>
-      </header>
-
-      <div class="summary-row">
-        <div class="summary-main">
-          <div class="summary-main-label">Total del día</div>
-          <div class="summary-main-value" id="totalHoy">Q0.00</div>
-          <div class="summary-main-meta">
-            <span id="ventasCount">0 ventas</span>
-            <span class="summary-pill">
-              <span class="summary-pill-dot"></span>
-              <span id="promedioHoy">Promedio Q0.00</span>
-            </span>
-          </div>
-        </div>
-        <div class="summary-side">
-          <div class="chip">
-            <span class="chip-label">Fecha filtrada</span>
-            <span class="chip-value" id="fechaChip">-</span>
-          </div>
-          <div class="chip">
-            <span class="chip-label">Histórico guardado</span>
-            <span class="chip-value" id="historicoCount">0 registros</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-title vendor-header-row">
-        <strong>Vendedor</strong>
-        <button type="button" class="mini-link-button" id="editarVendedor">Configurar</button>
-      </div>
-      <div class="chip" style="margin:0 2px 8px;">
-        <span class="chip-label">Usuario actual</span>
-        <span class="chip-value" id="vendedorLabel">Sin usuario</span>
-      </div>
-
-      <div class="section-title">
-        <strong>Registrar venta</strong>
-        <span>Solo lo esencial</span>
-      </div>
-
-      <form id="ventaForm">
-        <div class="row-inline">
-          <div class="field">
-            <label for="fecha">Fecha</label>
-            <input type="date" id="fecha" name="fecha" required />
-          </div>
-          <div class="field">
-            <label for="monto">Monto (Q)</label>
-            <input type="number" id="monto" name="monto" required inputmode="decimal" step="0.01" min="0" placeholder="0.00" />
-          </div>
-        </div>
-                <div class="field">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <label for="cliente">Cliente</label>
-            <button type="button" class="mini-link-button" id="nuevoClienteBtn">Cliente+</button>
-          </div>
-          <input type="text" id="cliente" name="cliente" placeholder="Ej. Tienda Maribel" autocomplete="off" list="clientesList" \/>
-          <datalist id="clientesList"></datalist>
-        </div>
-        <div class="field">
-          <label for="nota">Nota (opcional)</label>
-          <textarea id="nota" name="nota" placeholder="Ej. Venta con congelador, contado..."></textarea>
-        </div>
-        <button type="submit" class="btn-primary">
-          <span class="btn-icon">＋</span>
-          <span>Agregar venta</span>
-        </button>
-      </form>
-
-      <div class="section-title" style="margin-top:6px;">
-        <strong>Ventas del día</strong>
-        <span id="badgeDia">Hoy</span>
-      </div>
-
-      <div class="list-container" id="listaVentas">
-        <div class="empty-state">Aún no hay ventas registradas para esta fecha.</div>
-      </div>
-
-      <div class="backdrop" id="userDialogBackdrop">
-        <div class="dialog">
-          <h2>Configurar vendedor</h2>
-          <form id="userForm">
-            <label for="userName">Nombre del vendedor</label>
-            <input type="text" id="userName" autocomplete="off" placeholder="Ej. Sergio Ruta 17029" />
-            <div class="dialog-actions">
-              <button type="button" class="btn-secondary" id="cancelUser">Cancelar</button>
-              <button type="submit" class="btn-primary">Guardar</button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <div class="backdrop" id="clienteDialogBackdrop">
-        <div class="dialog">
-          <h2>Cliente nuevo</h2>
-          <form id="clienteForm">
-            <div class="field">
-              <label for="clienteNombre">Nombre</label>
-              <input type="text" id="clienteNombre" autocomplete="off" placeholder="Ej. Tienda Esquipulas" \/>
-            </div>
-            <div class="field">
-              <label for="clienteCodigo">Código</label>
-              <input type="text" id="clienteCodigo" autocomplete="off" placeholder="Ej. 17029-001" \/>
-            </div>
-            <div class="field">
-              <label for="clienteDireccion">Dirección</label>
-              <textarea id="clienteDireccion" placeholder="Ej. 3a avenida 5-40 zona 1"></textarea>
-            </div>
-            <div class="dialog-actions">
-              <button type="button" class="btn-secondary" id="cancelCliente">Cancelar</button>
-              <button type="submit" class="btn-primary">Guardar</button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <div class="footer-hint">
-        Datos guardados solo en tu dispositivo (localStorage). Control de Ventas — Datos guardados en tu dispositivo.
+<div class="app-shell">
+  <!-- Barra superior -->
+  <header class="top-bar">
+    <div class="top-left">
+      <button class="icon-button" id="btnUpload" title="Cargar base (TXT)">
+        📂
+      </button>
+      <input type="file" id="fileInput" accept=".txt" style="display:none">
+      <div class="route-box">
+        <span class="route-label">Ruta</span>
+        <input type="text" id="routeInput" class="route-input" placeholder="17029" />
       </div>
     </div>
+    <div class="title">
+      REGISTRO DE CLIENTES
+    </div>
+  </header>
+
+  <!-- Tarjeta principal -->
+  <main class="main-card">
+    <!-- Día + buscador -->
+    <div class="row wrap">
+      <div class="day-select-group">
+        <div class="row" style="justify-content: space-between; gap:4px;">
+          <span class="field-label">Día de visita</span>
+          <span class="tag-auto" id="autoDayTag">
+            ⏱ Auto: <span id="autoDayName">Lunes</span>
+          </span>
+        </div>
+        <select id="daySelect">
+          <option value="1">Día 1 — Lunes</option>
+          <option value="2">Día 2 — Martes</option>
+          <option value="3">Día 3 — Miércoles</option>
+          <option value="4">Día 4 — Jueves</option>
+          <option value="5">Día 5 — Viernes</option>
+          <option value="6">Día 6 — Sábado</option>
+        </select>
+        <div class="day-info">
+          Detecta automáticamente el día actual, pero puedes cambiarlo para agregar clientes a otro día.
+        </div>
+      </div>
+
+      <div class="search-group">
+        <label class="field-label" for="searchInput">Buscar cliente</label>
+        <input id="searchInput" type="text" placeholder="Ruta, código o nombre del negocio…" />
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:12px;width:100%;">
+        <div style="width:100%; display:flex; justify-content:space-between; align-items:center;">
+          <span class="field-label">Seleccionar cliente</span>
+          <div class="row" style="gap:6px; align-items:center;">
+            <span class="small" style="color:var(--text-muted);">Nuevo cliente</span>
+            <button class="icon-plus" id="btnNewClient" title="Crear cliente nuevo">+</button>
+          </div>
+        </div>
+        <div class="big-box" id="searchResults">
+          <div class="small" style="color:var(--text-muted);">
+            Carga la base TXT, selecciona el día y escribe para buscar por ruta, código o nombre.
+          </div>
+        </div>
+        <div class="actions-row">
+          <button class="ghost-btn" id="btnClearSelection">
+            Limpiar selección
+          </button>
+          <button class="primary-btn" id="btnSaveClient" disabled>
+            Guardar en <span id="labelCurrentDay">Día 1 — Lunes</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reestructura -->
+    <div class="section-title">Reestructura por día</div>
+    <div class="restruct-row">
+      <button class="secondary-btn" id="btnRestructure">
+        🧩 REESTRUCTURA
+      </button>
+      <button class="secondary-btn excel" id="btnExportExcel">
+        📊 Excel
+      </button>
+    </div>
+    <div class="restruct-box" id="restructOutput">
+      <div class="small" style="color:var(--text-muted);">
+        Aquí se mostrará la nueva base ordenada por día:
+        DIA 1 LUNES (1,2,3…), DIA 2 MARTES, … hasta SÁBADO.
+      </div>
+    </div>
+    <div class="footer-note">
+      • La base original puede venir desordenada y con duplicados; la reestructura dejará un solo registro por cliente, ordenado por día.  
+      • El archivo Excel seguirá el mismo orden para compartir la nueva base.
+    </div>
+  </main>
+</div>
+
+<!-- Modal nuevo cliente -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Nuevo cliente</div>
+        <div class="small" style="color:var(--text-muted);">
+          Se asignará al <span id="modalDayLabel">Día 1 — Lunes</span>.
+        </div>
+      </div>
+      <button class="modal-close" id="btnModalClose">&times;</button>
+    </div>
+    <div class="modal-fields">
+      <div>
+        <div class="field-label">Ruta</div>
+        <input type="text" id="newRuta" placeholder="Ej. 17029" />
+      </div>
+      <div>
+        <div class="field-label">Código</div>
+        <input type="text" id="newCodigo" placeholder="Código del cliente" />
+      </div>
+      <div>
+        <div class="field-label">Nombre del negocio</div>
+        <input type="text" id="newNombre" placeholder="Tienda, depósito, etc." />
+      </div>
+      <div>
+        <div class="field-label">Dirección</div>
+        <input type="text" id="newDireccion" placeholder="Dirección principal" />
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="ghost-btn small" id="btnModalCancel">Cancelar</button>
+      <button class="primary-btn small" id="btnModalSave">Guardar</button>
+    </div>
   </div>
+</div>
 
-  <script>
-    const STORAGE_KEY = "appstyle-ventas-v1";
-    const STORAGE_USER_KEY = "appstyle-ventas-user";
-    const STORAGE_CLIENTS_KEY = "appstyle-ventas-clientes-v1";
+<script>
+  // --- Datos en memoria ---
+  const dayNames = {
+    1: "Lunes",
+    2: "Martes",
+    3: "Miércoles",
+    4: "Jueves",
+    5: "Viernes",
+    6: "Sábado"
+  };
 
-    const form = document.getElementById("ventaForm");
-    const fechaInput = document.getElementById("fecha");
-    const montoInput = document.getElementById("monto");
-    const clienteInput = document.getElementById("cliente");
-    const notaInput = document.getElementById("nota");
+  let clientsAll = [];        // Toda la base (TXT + nuevos)
+  let selectedDay = 1;        // Día actual para asignar
+  let autoDay = 1;            // Día detectado automáticamente
+  let selectedClientId = null;
+  let lastRestructured = null; // cache última reestructura
 
-    const todayLabel = document.getElementById("todayLabel");
-    const fechaChip = document.getElementById("fechaChip");
-    const badgeDia = document.getElementById("badgeDia");
-    const totalHoyEl = document.getElementById("totalHoy");
-    const ventasCountEl = document.getElementById("ventasCount");
-    const promedioHoyEl = document.getElementById("promedioHoy");
-    const historicoCountEl = document.getElementById("historicoCount");
-    const listaVentas = document.getElementById("listaVentas");
+  function getTodayDayNumber() {
+    const d = new Date().getDay(); // 0-domingo, 1-lunes... 6-sábado
+    switch (d) {
+      case 1: return 1; // lunes
+      case 2: return 2;
+      case 3: return 3;
+      case 4: return 4;
+      case 5: return 5;
+      case 6: return 6; // sábado
+      default: return 1; // domingo -> tratar como día 1
+    }
+  }
 
-    const vendedorLabel = document.getElementById("vendedorLabel");
-    const editarVendedorBtn = document.getElementById("editarVendedor");
-    const userDialogBackdrop = document.getElementById("userDialogBackdrop");
-    const userForm = document.getElementById("userForm");
-    const userNameInput = document.getElementById("userName");
-    const cancelUserBtn = document.getElementById("cancelUser");
+  function updateDayLabels() {
+    const labelCurrentDay = document.getElementById("labelCurrentDay");
+    const modalDayLabel = document.getElementById("modalDayLabel");
+    const autoDayName = document.getElementById("autoDayName");
 
-    const nuevoClienteBtn = document.getElementById("nuevoClienteBtn");
-    const clienteDialogBackdrop = document.getElementById("clienteDialogBackdrop");
-    const clienteForm = document.getElementById("clienteForm");
-    const clienteNombreInput = document.getElementById("clienteNombre");
-    const clienteCodigoInput = document.getElementById("clienteCodigo");
-    const clienteDireccionInput = document.getElementById("clienteDireccion");
-    const cancelClienteBtn = document.getElementById("cancelCliente");
-    const clientesList = document.getElementById("clientesList");
+    autoDayName.textContent = dayNames[autoDay] || "Lunes";
 
-    function formatDateISO(date) {
-      return date.toISOString().slice(0, 10);
+    const text = `Día ${selectedDay} — ${dayNames[selectedDay] || ""}`;
+    labelCurrentDay.textContent = text;
+    modalDayLabel.textContent = text;
+  }
+
+  function renderSearchResults() {
+    const container = document.getElementById("searchResults");
+    const searchInput = document.getElementById("searchInput");
+    const term = searchInput.value.trim().toLowerCase();
+    container.innerHTML = "";
+
+    if (!clientsAll.length) {
+      container.innerHTML = '<div class="small" style="color:#6B7280;">Carga primero la base TXT para buscar clientes.</div>';
+      return;
     }
 
-    function formatDateNice(date) {
-      const intl = new Intl.DateTimeFormat("es-GT", { weekday: "short", day: "2-digit", month: "short" });
-      return intl.format(date).replace(",", "");
+    const filtered = term
+      ? clientsAll.filter(c => {
+          return (
+            (c.ruta && String(c.ruta).toLowerCase().includes(term)) ||
+            (c.codigo && String(c.codigo).toLowerCase().includes(term)) ||
+            (c.nombre && c.nombre.toLowerCase().includes(term))
+          );
+        })
+      : clientsAll;
+
+    if (!filtered.length) {
+      container.innerHTML = '<div class="small" style="color:#6B7280;">Sin resultados para esa búsqueda.</div>';
+      return;
     }
 
-    function formatMoney(q) {
-      const n = Number(q) || 0;
-      return "Q" + n.toLocaleString("es-GT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
+    filtered.forEach(c => {
+      const item = document.createElement("div");
+      item.className = "client-item";
+      item.dataset.id = c.id;
 
-    // ---- Usuario ----
-    function loadUser() {
-      try {
-        const raw = localStorage.getItem(STORAGE_USER_KEY);
-        return raw ? JSON.parse(raw) : null;
-      } catch (e) {
-        console.error("Error leyendo usuario", e);
-        return null;
+      if (c.id === selectedClientId) {
+        item.classList.add("active");
+      }
+
+      const nombre = document.createElement("div");
+      nombre.className = "client-name";
+      nombre.textContent = c.nombre || "(Sin nombre)";
+
+      const meta = document.createElement("div");
+      meta.className = "client-meta";
+      meta.textContent =
+        `Ruta ${c.ruta || "-"} | Código ${c.codigo || "-"} | Día ${c.day || "-"} ${dayNames[c.day] || ""}`;
+
+      item.appendChild(nombre);
+      item.appendChild(meta);
+
+      item.addEventListener("click", () => {
+        selectedClientId = c.id;
+        updateSaveButtonState();
+        renderSearchResults(); // refrescar para marcar activo
+      });
+
+      container.appendChild(item);
+    });
+  }
+
+  function updateSaveButtonState() {
+    const btn = document.getElementById("btnSaveClient");
+    btn.disabled = !selectedClientId;
+  }
+
+  function restructureBase() {
+    // Deduplicar por código (o nombre+dirección si no hay código) y agrupar por día
+    const uniqueMap = new Map();
+
+    // Recorremos al revés para que el último cambio sea el que manda
+    for (let i = clientsAll.length - 1; i >= 0; i--) {
+      const c = clientsAll[i];
+      const key =
+        (c.codigo && String(c.codigo).trim()) ||
+        (c.nombre || "") + "|" + (c.direccion || "");
+      if (!key.trim()) continue;
+
+      if (!uniqueMap.has(key)) {
+        // Asegurar día válido
+        let day = parseInt(c.day, 10);
+        if (!day || day < 1 || day > 6) {
+          day = 1;
+        }
+        uniqueMap.set(key, { ...c, day });
       }
     }
 
-    function saveUser(name) {
-      try {
-        localStorage.setItem(STORAGE_USER_KEY, JSON.stringify({ nombre: name, updatedAt: Date.now() }));
-      } catch (e) {
-        console.error("Error guardando usuario", e);
-      }
+    const grouped = { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
+    for (const [, client] of uniqueMap) {
+      const d = client.day || 1;
+      grouped[d].push(client);
     }
 
-    function updateUserUI() {
-      const user = loadUser();
-      if (user && user.nombre) {
-        vendedorLabel.textContent = user.nombre;
-      } else {
-        vendedorLabel.textContent = "Sin usuario";
-      }
-    }
-
-    function openUserDialog() {
-      const existing = loadUser();
-      if (userNameInput) {
-        userNameInput.value = existing && existing.nombre ? existing.nombre : "";
-        setTimeout(() => {
-          userNameInput.focus();
-        }, 10);
-      }
-      if (userDialogBackdrop) {
-        userDialogBackdrop.classList.add("is-visible");
-      }
-    }
-
-    function closeUserDialog() {
-      if (userDialogBackdrop) {
-        userDialogBackdrop.classList.remove("is-visible");
-      }
-    }
-
-    // ---- Clientes ----
-    function loadClientes() {
-      try {
-        const raw = localStorage.getItem(STORAGE_CLIENTS_KEY);
-        return raw ? JSON.parse(raw) : [];
-      } catch (e) {
-        console.error("Error leyendo clientes", e);
-        return [];
-      }
-    }
-
-    function saveClientes(list) {
-      try {
-        localStorage.setItem(STORAGE_CLIENTS_KEY, JSON.stringify(list));
-      } catch (e) {
-        console.error("Error guardando clientes", e);
-      }
-    }
-
-    function refreshClientesOptions() {
-      if (!clientesList) return;
-      const clientes = loadClientes();
-      clientesList.innerHTML = "";
-      clientes.forEach(c => {
-        const opt = document.createElement("option");
-        opt.value = c.nombre;
-        opt.label = c.codigo ? `${c.nombre} (${c.codigo})` : c.nombre;
-        clientesList.appendChild(opt);
+    // Podemos ordenar por nombre
+    for (let d = 1; d <= 6; d++) {
+      grouped[d].sort((a, b) => {
+        const na = (a.nombre || "").toLowerCase();
+        const nb = (b.nombre || "").toLowerCase();
+        return na.localeCompare(nb, "es");
       });
     }
 
-    function findClienteByName(nombre) {
-      if (!nombre) return null;
-      const clientes = loadClientes();
-      const lower = nombre.toLowerCase();
-      return clientes.find(c => (c.nombre || "").toLowerCase() === lower) || null;
-    }
+    lastRestructured = grouped;
+    renderRestructured(grouped);
+  }
 
-    function openClienteDialog() {
-      if (clienteNombreInput) {
-        clienteNombreInput.value = "";
-      }
-      if (clienteCodigoInput) {
-        clienteCodigoInput.value = "";
-      }
-      if (clienteDireccionInput) {
-        clienteDireccionInput.value = "";
-      }
-      if (clienteDialogBackdrop) {
-        clienteDialogBackdrop.classList.add("is-visible");
-      }
-      setTimeout(() => {
-        if (clienteNombreInput) clienteNombreInput.focus();
-      }, 10);
-    }
+  function renderRestructured(grouped) {
+    const container = document.getElementById("restructOutput");
+    container.innerHTML = "";
 
-    function closeClienteDialog() {
-      if (clienteDialogBackdrop) {
-        clienteDialogBackdrop.classList.remove("is-visible");
-      }
-    }
+    let hasContent = false;
 
-    // ---- Ventas ----
-    function loadVentas() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
-      } catch (e) {
-        console.error("Error leyendo ventas", e);
-        return [];
-      }
-    }
+    for (let d = 1; d <= 6; d++) {
+      const clients = grouped[d] || [];
+      if (!clients.length) continue;
+      hasContent = true;
 
-    function saveVentas(list) {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-      } catch (e) {
-        console.error("Error guardando ventas", e);
-      }
-    }
+      const block = document.createElement("div");
+      block.className = "day-block";
 
-    function refreshUI() {
-      const selectedDate = fechaInput.value;
-      const ventas = loadVentas();
+      const title = document.createElement("div");
+      title.className = "day-block-title";
+      title.textContent = `DIA ${d} ${dayNames[d]?.toUpperCase() || ""}`;
+      block.appendChild(title);
 
-      historicoCountEl.textContent = ventas.length + (ventas.length === 1 ? " registro" : " registros");
-
-      if (!selectedDate) return;
-
-      const filtered = ventas.filter(v => v.fecha === selectedDate);
-
-      let total = 0;
-      filtered.forEach(v => {
-        total += Number(v.monto) || 0;
+      clients.forEach((c, idx) => {
+        const row = document.createElement("div");
+        row.className = "day-client";
+        row.textContent =
+          `${idx + 1}. ${c.nombre || "(Sin nombre)"} — Ruta ${c.ruta || "-"} | Código ${c.codigo || "-"}`;
+        block.appendChild(row);
       });
 
-      totalHoyEl.textContent = formatMoney(total);
-      ventasCountEl.textContent = filtered.length + (filtered.length === 1 ? " venta" : " ventas");
-      const promedio = filtered.length ? total / filtered.length : 0;
-      promedioHoyEl.textContent = "Promedio " + formatMoney(promedio);
-
-      const dateObj = new Date(selectedDate + "T00:00:00");
-      fechaChip.textContent = formatDateNice(dateObj);
-
-      const todayISO = formatDateISO(new Date());
-      if (selectedDate === todayISO) {
-        badgeDia.textContent = "Hoy";
-        todayLabel.textContent = "Hoy";
-      } else {
-        badgeDia.textContent = "Filtrando: " + selectedDate;
-        todayLabel.textContent = "Filtro activo";
-      }
-
-      renderLista(filtered, selectedDate);
+      container.appendChild(block);
     }
 
-    function renderLista(list, dateStr) {
-      listaVentas.innerHTML = "";
-      if (!list.length) {
-        const div = document.createElement("div");
-        div.className = "empty-state";
-        div.textContent = "Aún no hay ventas registradas para esta fecha.";
-        listaVentas.appendChild(div);
-        return;
-      }
-
-      list
-        .slice()
-        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
-        .forEach(v => {
-          const item = document.createElement("div");
-          item.className = "sale-item";
-
-          const main = document.createElement("div");
-          main.className = "sale-main";
-
-          const client = document.createElement("div");
-          client.className = "sale-client";
-          client.textContent = v.cliente || "Sin nombre";
-
-          const note = document.createElement("div");
-          note.className = "sale-note";
-
-          const extraCliente = (v.clienteCodigo || v.clienteDireccion)
-            ? `Cod: ${v.clienteCodigo || "-"} · ${v.clienteDireccion || ""}`
-            : "";
-
-          if (v.nota) {
-            note.textContent = v.nota;
-            if (extraCliente) {
-              note.textContent += " — " + extraCliente;
-            }
-          } else if (extraCliente) {
-            note.textContent = extraCliente;
-          } else {
-            note.textContent = "Sin nota";
-          }
-
-          const meta = document.createElement("div");
-          meta.className = "sale-meta";
-
-          const time = new Date(v.createdAt || Date.now());
-          const timeLabel = time.toLocaleTimeString("es-GT", { hour: "2-digit", minute: "2-digit" });
-
-          const timeSpan = document.createElement("span");
-          timeSpan.textContent = timeLabel + " · Contado";
-
-          const dot = document.createElement("span");
-          dot.className = "dot-soft";
-
-          const dateSpan = document.createElement("span");
-          dateSpan.className = "badge-date";
-          dateSpan.textContent = v.fecha === dateStr ? "Hoy" : v.fecha;
-
-          meta.appendChild(timeSpan);
-          meta.appendChild(dot);
-          meta.appendChild(dateSpan);
-
-          main.appendChild(client);
-          main.appendChild(note);
-          main.appendChild(meta);
-
-          const amount = document.createElement("div");
-          amount.className = "sale-amount";
-          amount.textContent = formatMoney(v.monto);
-
-          item.appendChild(main);
-          item.appendChild(amount);
-
-          listaVentas.appendChild(item);
-        });
+    if (!hasContent) {
+      container.innerHTML =
+        '<div class="small" style="color:#6B7280;">No hay datos para reestructurar. Carga la base y/o agrega clientes.</div>';
     }
+  }
 
-    // ---- Eventos ----
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const fecha = fechaInput.value;
-      const rawMonto = (montoInput.value || "").replace(",", ".");
-      const monto = parseFloat(rawMonto);
-      const cliente = clienteInput.value.trim();
-      const nota = notaInput.value.trim();
+  function exportToExcelLike() {
+    if (!lastRestructured) {
+      restructureBase();
+    }
+    if (!lastRestructured) return;
 
-      if (!fecha || isNaN(monto)) {
-        montoInput.focus();
-        return;
-      }
+    let csv = "DIA;ORDEN;RUTA;CODIGO;NOMBRE;DIRECCION\n";
 
-      const infoCliente = findClienteByName(cliente);
+    for (let d = 1; d <= 6; d++) {
+      const clients = lastRestructured[d] || [];
+      if (!clients.length) continue;
 
-      const ventas = loadVentas();
-      ventas.push({
-        id: Date.now().toString(),
-        fecha,
-        monto,
-        cliente,
-        nota,
-        clienteCodigo: infoCliente ? (infoCliente.codigo || "") : "",
-        clienteDireccion: infoCliente ? (infoCliente.direccion || "") : "",
-        createdAt: Date.now()
+      clients.forEach((c, idx) => {
+        const row = [
+          `DIA ${d} ${dayNames[d] || ""}`,
+          idx + 1,
+          c.ruta || "",
+          c.codigo || "",
+          (c.nombre || "").replace(/;/g, ","),
+          (c.direccion || "").replace(/;/g, ",")
+        ];
+        csv += row.join(";") + "\n";
       });
+    }
 
-      saveVentas(ventas);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Base_clientes_reestructurada.csv"; // Excel lo abre sin problemas
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
 
-      montoInput.value = "";
-      notaInput.value = "";
-      montoInput.blur();
+  function openModal() {
+    const backdrop = document.getElementById("modalBackdrop");
+    backdrop.style.display = "flex";
+  }
 
-      refreshUI();
+  function closeModal() {
+    const backdrop = document.getElementById("modalBackdrop");
+    backdrop.style.display = "none";
+    document.getElementById("newRuta").value = document.getElementById("routeInput").value || "";
+    document.getElementById("newCodigo").value = "";
+    document.getElementById("newNombre").value = "";
+    document.getElementById("newDireccion").value = "";
+  }
+
+  function saveNewClientFromModal() {
+    const ruta = document.getElementById("newRuta").value.trim() || document.getElementById("routeInput").value.trim();
+    const codigo = document.getElementById("newCodigo").value.trim();
+    const nombre = document.getElementById("newNombre").value.trim();
+    const direccion = document.getElementById("newDireccion").value.trim();
+
+    if (!nombre) {
+      alert("El nombre del negocio es obligatorio.");
+      return;
+    }
+
+    const newClient = {
+      id: "new-" + Date.now() + "-" + Math.random().toString(16).slice(2),
+      ruta: ruta || "",
+      codigo,
+      nombre,
+      direccion,
+      day: selectedDay
+    };
+
+    clientsAll.push(newClient);
+    closeModal();
+    renderSearchResults();
+    restructureBase();
+  }
+
+  function handleSaveClientToDay() {
+    if (!selectedClientId) return;
+    const client = clientsAll.find(c => c.id === selectedClientId);
+    if (!client) return;
+
+    client.day = selectedDay;
+    restructureBase();
+    alert(`Cliente asignado a Día ${selectedDay} — ${dayNames[selectedDay] || ""}.`);
+  }
+
+  function parseTxtFile(content) {
+    const lines = content.split(/\r?\n/);
+    clientsAll = [];
+
+    lines.forEach((line, index) => {
+      const trimmed = line.trim();
+      if (!trimmed) return;
+
+      // Formato asumido: RUTA;CODIGO;NOMBRE;DIRECCION;DIA
+      const parts = trimmed.split(";");
+      const ruta = (parts[0] || "").trim();
+      const codigo = (parts[1] || "").trim();
+      const nombre = (parts[2] || "").trim();
+      const direccion = (parts[3] || "").trim();
+      let day = parseInt((parts[4] || "").trim(), 10);
+
+      if (!day || day < 1 || day > 6) {
+        day = 1; // si no viene día, asignamos Día 1 (lunes) por defecto
+      }
+
+      const client = {
+        id: `base-${index}`,
+        ruta,
+        codigo,
+        nombre,
+        direccion,
+        day
+      };
+
+      clientsAll.push(client);
     });
 
-    fechaInput.addEventListener("change", refreshUI);
+    renderSearchResults();
+    restructureBase();
+  }
 
-    if (editarVendedorBtn) {
-      editarVendedorBtn.addEventListener("click", () => {
-        openUserDialog();
-      });
-    }
+  // --- Eventos iniciales ---
+  document.addEventListener("DOMContentLoaded", () => {
+    autoDay = getTodayDayNumber();
+    selectedDay = autoDay;
 
-    if (userForm) {
-      userForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        if (!userNameInput) return;
-        const nombre = userNameInput.value.trim();
-        if (!nombre) {
-          userNameInput.focus();
-          return;
-        }
-        saveUser(nombre);
-        updateUserUI();
-        closeUserDialog();
-      });
-    }
+    document.getElementById("daySelect").value = String(selectedDay);
+    updateDayLabels();
 
-    if (cancelUserBtn) {
-      cancelUserBtn.addEventListener("click", () => {
-        closeUserDialog();
-      });
-    }
+    document.getElementById("btnUpload").addEventListener("click", () => {
+      document.getElementById("fileInput").click();
+    });
 
-    if (userDialogBackdrop) {
-      userDialogBackdrop.addEventListener("click", (e) => {
-        if (e.target === userDialogBackdrop) {
-          closeUserDialog();
-        }
-      });
-    }
+    document.getElementById("fileInput").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        parseTxtFile(ev.target.result);
+      };
+      reader.readAsText(file, "utf-8");
+    });
 
-    if (nuevoClienteBtn) {
-      nuevoClienteBtn.addEventListener("click", () => {
-        openClienteDialog();
-      });
-    }
+    document.getElementById("daySelect").addEventListener("change", (e) => {
+      selectedDay = parseInt(e.target.value, 10) || 1;
+      updateDayLabels();
+    });
 
-    if (clienteForm) {
-      clienteForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const nombre = clienteNombreInput ? clienteNombreInput.value.trim() : "";
-        const codigo = clienteCodigoInput ? clienteCodigoInput.value.trim() : "";
-        const direccion = clienteDireccionInput ? clienteDireccionInput.value.trim() : "";
+    document.getElementById("searchInput").addEventListener("input", () => {
+      selectedClientId = null;
+      updateSaveButtonState();
+      renderSearchResults();
+    });
 
-        if (!nombre) {
-          if (clienteNombreInput) clienteNombreInput.focus();
-          return;
-        }
+    document.getElementById("btnClearSelection").addEventListener("click", () => {
+      selectedClientId = null;
+      updateSaveButtonState();
+      renderSearchResults();
+    });
 
-        const clientes = loadClientes();
-        clientes.push({
-          id: Date.now().toString(),
-          nombre,
-          codigo,
-          direccion,
-          createdAt: Date.now()
-        });
+    document.getElementById("btnSaveClient").addEventListener("click", handleSaveClientToDay);
+    document.getElementById("btnRestructure").addEventListener("click", restructureBase);
+    document.getElementById("btnExportExcel").addEventListener("click", exportToExcelLike);
 
-        saveClientes(clientes);
-        refreshClientesOptions();
+    // Modal nuevo cliente
+    document.getElementById("btnNewClient").addEventListener("click", openModal);
+    document.getElementById("btnModalClose").addEventListener("click", closeModal);
+    document.getElementById("btnModalCancel").addEventListener("click", closeModal);
+    document.getElementById("btnModalSave").addEventListener("click", saveNewClientFromModal);
 
-        if (clienteInput) {
-          clienteInput.value = nombre;
-        }
-
-        closeClienteDialog();
-      });
-    }
-
-    if (cancelClienteBtn) {
-      cancelClienteBtn.addEventListener("click", () => {
-        closeClienteDialog();
-      });
-    }
-
-    if (clienteDialogBackdrop) {
-      clienteDialogBackdrop.addEventListener("click", (e) => {
-        if (e.target === clienteDialogBackdrop) {
-          closeClienteDialog();
-        }
-      });
-    }
-
-    // ---- Init ----
-    (function init() {
-      const now = new Date();
-      const iso = formatDateISO(now);
-      fechaInput.value = iso;
-      todayLabel.textContent = "Hoy";
-      fechaChip.textContent = formatDateNice(now);
-      updateUserUI();
-      refreshClientesOptions();
-      refreshUI();
-    })();
-  </script>
+    document.getElementById("modalBackdrop").addEventListener("click", (e) => {
+      if (e.target.id === "modalBackdrop") {
+        closeModal();
+      }
+    });
+  });
+</script>
 </body>
 </html>
