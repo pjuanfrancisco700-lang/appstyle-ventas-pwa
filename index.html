@@ -8,479 +8,365 @@
     :root {
       --bg: #F4F5F7;
       --card: #FFFFFF;
-      --primary: #0F3B5F;   /* toque SAP */
-      --primary-soft: #D8E3F0;
-      --border: #D0D4DD;
+      --accent: #0F5C9A; /* estilo SAP */
+      --accent-soft: #E3ECF5;
+      --border: #D0D4DC;
       --text-main: #111827;
-      --text-muted: #6B7280;
-      --accent: #2563EB;
+      --text-soft: #6B7280;
       --danger: #B91C1C;
-      --shadow-soft: 0 6px 18px rgba(15, 59, 95, 0.08);
-      --radius-lg: 16px;
     }
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     body {
+      margin: 0;
+      padding: 12px;
       background: var(--bg);
       color: var(--text-main);
       display: flex;
       justify-content: center;
-      padding: 12px 8px 24px;
     }
 
     .app-shell {
       width: 100%;
       max-width: 480px;
-      background: linear-gradient(to bottom, #F9FAFB, #EEF1F5);
-      border-radius: 24px;
-      box-shadow: var(--shadow-soft);
-      padding: 10px 10px 18px;
-      border: 1px solid rgba(15,59,95,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .top-bar {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 10px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--card);
-      border-radius: 18px;
-      padding: 8px 10px;
-      border: 1px solid rgba(15,59,95,0.06);
-      margin-bottom: 10px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+      border: 1px solid var(--border);
     }
 
     .top-left {
       display: flex;
       align-items: center;
       gap: 8px;
-      flex: 1;
     }
 
-    .file-label {
-      display: inline-flex;
+    .icon-button {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--accent-soft);
+      display: flex;
       align-items: center;
       justify-content: center;
-      width: 34px;
-      height: 34px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--primary-soft);
-      color: var(--primary);
       font-size: 18px;
       cursor: pointer;
-      flex-shrink: 0;
+      transition: background 0.15s, transform 0.05s;
     }
 
-    .file-label span {
-      transform: translateY(-1px);
+    .icon-button:active {
+      transform: scale(0.97);
+      background: #d4e0f0;
     }
 
-    #dbInput {
-      display: none;
-    }
-
-    .route-input {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .route-input label {
-      display: block;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      margin-bottom: 2px;
-    }
-
-    .route-input input {
-      width: 100%;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      padding: 5px 8px;
+    .top-title {
       font-size: 12px;
-      outline: none;
-      background: #F9FAFB;
-    }
-
-    .route-input input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 1px rgba(37,99,235,0.16);
-      background: #FFFFFF;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
     }
 
     .top-right {
       text-align: right;
-      margin-left: 6px;
+      max-width: 50%;
     }
 
-    .top-right .title {
+    .top-right span {
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--primary);
-      border-left: 2px solid var(--primary);
-      padding-left: 6px;
-      line-height: 1.2;
+      color: var(--text-soft);
     }
 
-    .top-right .subtitle {
-      font-size: 10px;
-      color: var(--text-muted);
-      margin-top: 2px;
+    .field-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 4px;
     }
 
-    .section-card {
-      background: var(--card);
-      border-radius: var(--radius-lg);
-      padding: 10px 10px 8px;
-      margin-bottom: 10px;
-      border: 1px solid rgba(148,163,184,0.35);
+    .input-sm {
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: 6px 8px;
+      font-size: 13px;
+      outline: none;
+      width: 92px;
     }
 
-    .section-header {
+    .input-sm:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-soft);
+    }
+
+    .route-group {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
+      flex-direction: column;
+      gap: 2px;
     }
 
-    .section-header h2 {
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .row.space-between {
+      justify-content: space-between;
+    }
+
+    .select {
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: 6px 8px;
+      font-size: 13px;
+      outline: none;
+      flex: 1;
+      background: #F9FAFB;
+    }
+
+    .select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-soft);
+    }
+
+    .day-hint {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .search-input {
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      font-size: 13px;
+      outline: none;
+      flex: 1;
+      background: #F9FAFB;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-soft);
+    }
+
+    .pill-button {
+      border-radius: 999px;
+      border: none;
+      padding: 6px 12px;
       font-size: 12px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--text-muted);
-    }
-
-    .badge-today {
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: var(--primary-soft);
-      color: var(--primary);
-    }
-
-    .day-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-
-    .day-selector {
-      flex: 1;
-    }
-
-    .day-selector label {
-      display: block;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      margin-bottom: 2px;
-    }
-
-    .day-selector select {
-      width: 100%;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      padding: 6px 9px;
-      font-size: 12px;
-      background: #F9FAFB;
-      outline: none;
-    }
-
-    .day-selector select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 1px rgba(37,99,235,0.16);
-      background: #FFFFFF;
-    }
-
-    .day-note {
-      font-size: 10px;
-      color: var(--text-muted);
-      max-width: 45%;
-      line-height: 1.2;
-    }
-
-    .search-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 6px;
-    }
-
-    .search-field {
-      flex: 1;
-      position: relative;
-    }
-
-    .search-field label {
-      display: block;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      margin-bottom: 2px;
-    }
-
-    .search-field input {
-      width: 100%;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      padding: 6px 26px 6px 8px;
-      font-size: 12px;
-      background: #F9FAFB;
-      outline: none;
-    }
-
-    .search-field input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(37,99,235,0.16);
-      background: #FFFFFF;
-    }
-
-    .search-icon {
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 13px;
-      color: var(--text-muted);
-      pointer-events: none;
-    }
-
-    .add-client-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 12px;
-      border: none;
+      background: var(--accent);
+      color: #FFF;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
+      gap: 4px;
+      transition: background 0.15s, transform 0.05s;
+    }
+
+    .pill-button.secondary {
+      background: #F3F4F6;
+      color: var(--text-main);
+    }
+
+    .pill-button.full {
+      width: 100%;
       justify-content: center;
-      font-size: 18px;
-      cursor: pointer;
-      background: var(--accent);
-      color: #FFFFFF;
-      box-shadow: 0 4px 10px rgba(37,99,235,0.35);
-      flex-shrink: 0;
     }
 
-    .add-client-btn:active {
-      transform: translateY(1px);
-      box-shadow: 0 2px 6px rgba(37,99,235,0.4);
+    .pill-button:active {
+      transform: scale(0.98);
+      background: #0B4A7A;
     }
 
-    .hint-text {
-      font-size: 10px;
-      color: var(--text-muted);
-      margin-bottom: 4px;
+    .pill-button.secondary:active {
+      background: #E5E7EB;
     }
 
-    .result-list {
-      max-height: 140px;
+    .results-list {
+      max-height: 150px;
       overflow-y: auto;
       border-radius: 10px;
-      border: 1px solid rgba(209, 213, 219, 0.8);
+      border: 1px solid var(--border);
       background: #F9FAFB;
-      padding: 2px;
     }
 
     .result-item {
       padding: 6px 8px;
-      border-radius: 8px;
-      margin: 2px;
+      border-bottom: 1px solid #E5E7EB;
+      font-size: 13px;
       cursor: pointer;
-      font-size: 11px;
       display: flex;
       flex-direction: column;
-      gap: 1px;
+      gap: 2px;
+    }
+
+    .result-item:last-child {
+      border-bottom: none;
     }
 
     .result-item:hover {
       background: #E5EDF7;
     }
 
-    .result-item.selected {
-      background: #DBEAFE;
-      border: 1px solid var(--accent);
-    }
-
     .result-name {
       font-weight: 600;
-      color: var(--text-main);
     }
 
     .result-meta {
-      font-size: 10px;
-      color: var(--text-muted);
+      font-size: 11px;
+      color: var(--text-soft);
     }
 
-    .actions-row {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 6px;
-      gap: 6px;
+    .selected-badge {
+      font-size: 11px;
+      color: var(--text-soft);
     }
 
-    .btn {
-      border-radius: 999px;
-      padding: 6px 16px;
-      font-size: 12px;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 500;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: #FFFFFF;
-      box-shadow: 0 4px 10px rgba(15,59,95,0.35);
-    }
-
-    .btn-primary:disabled {
-      background: #9CA3AF;
-      box-shadow: none;
-      cursor: default;
-    }
-
-    .btn-primary:active:not(:disabled) {
-      transform: translateY(1px);
-      box-shadow: 0 2px 6px rgba(15,59,95,0.4);
-    }
-
-    .btn-restruct {
-      width: 100%;
-      justify-content: center;
-      margin-top: 4px;
-      padding: 8px 16px;
-      background: linear-gradient(to right, #0F3B5F, #2563EB);
-      color: #FFFFFF;
+    .selected-name {
       font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      border-radius: 999px;
-      box-shadow: 0 6px 14px rgba(37,99,235,0.35);
-    }
-
-    .btn-restruct:active {
-      transform: translateY(1px);
-      box-shadow: 0 3px 8px rgba(37,99,235,0.45);
-    }
-
-    .btn-restruct span.icon {
-      font-size: 14px;
-    }
-
-    .btn-restruct span.label {
       font-weight: 600;
     }
 
-    .section-res {
-      background: var(--card);
-      border-radius: 18px;
-      padding: 10px;
-      border: 1px solid rgba(148,163,184,0.5);
+    .status-text {
+      font-size: 11px;
+      color: var(--text-soft);
     }
 
-    .res-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
+    .status-text.error {
+      color: var(--danger);
     }
 
-    .res-header h2 {
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-    }
-
-    .res-count {
-      font-size: 10px;
-      color: var(--text-muted);
+    .restruct-card {
+      margin-top: 2px;
     }
 
     .day-block {
-      margin-top: 8px;
-      border-radius: 14px;
-      border: 1px solid rgba(209,213,219,0.9);
-      overflow: hidden;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
       background: #F9FAFB;
+      overflow: hidden;
     }
 
-    .day-block-header {
-      background: linear-gradient(to right, #0F3B5F, #2563EB);
-      color: #FFFFFF;
+    .day-header {
       padding: 6px 8px;
+      background: var(--accent-soft);
       font-size: 11px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .day-block-header strong {
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
     }
 
-    .day-block-header span {
-      font-size: 10px;
-      opacity: 0.9;
+    .table-wrapper {
+      overflow-x: auto;
     }
 
-    .day-table {
+    table {
       width: 100%;
       border-collapse: collapse;
       font-size: 11px;
     }
 
-    .day-table thead {
-      background: #E5E7EB;
-    }
-
-    .day-table th,
-    .day-table td {
+    th, td {
       padding: 4px 6px;
       border-bottom: 1px solid #E5E7EB;
       text-align: left;
+      white-space: nowrap;
     }
 
-    .day-table th {
+    th {
+      background: #EEF2F7;
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
       color: #374151;
     }
 
-    .day-table tr:nth-child(even) td {
-      background: #F3F4F6;
-    }
-
-    .empty-state {
-      font-size: 11px;
-      color: var(--text-muted);
+    tr:nth-child(even) td {
       background: #F9FAFB;
-      border-radius: 12px;
-      padding: 8px;
-      border: 1px dashed #D1D5DB;
     }
 
-    /* Modal nuevo cliente */
+    tr:nth-child(odd) td {
+      background: #FFFFFF;
+    }
+
+    .footer-space {
+      height: 10px;
+    }
+
+    .restruct-button {
+      margin-top: 2px;
+    }
+
+    /* Toggle switch */
+    .toggle-switch {
+      width: 32px;
+      height: 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #F3F4F6;
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      transition: background 0.15s;
+    }
+
+    .toggle-knob {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: #4B5563;
+      transition: transform 0.15s, background 0.15s;
+    }
+
+    .toggle-switch.on {
+      background: var(--accent-soft);
+    }
+
+    .toggle-switch.on .toggle-knob {
+      transform: translateX(14px);
+      background: var(--accent);
+    }
+
+    /* Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(15,23,42,0.35);
+      background: rgba(15, 23, 42, 0.38);
       display: none;
       align-items: center;
       justify-content: center;
@@ -488,582 +374,535 @@
     }
 
     .modal {
-      width: 100%;
-      max-width: 420px;
       background: var(--card);
-      border-radius: 22px;
-      padding: 12px 12px 10px;
-      box-shadow: 0 14px 36px rgba(15,23,42,0.55);
-      border: 1px solid rgba(15,59,95,0.2);
-    }
-
-    .modal-header {
+      border-radius: 16px;
+      padding: 14px 14px 12px;
+      width: 92%;
+      max-width: 420px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.28);
+      border: 1px solid var(--border);
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
+      flex-direction: column;
+      gap: 8px;
     }
 
     .modal-title {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--primary);
     }
 
-    .modal-close {
-      border: none;
-      background: transparent;
-      font-size: 18px;
-      cursor: pointer;
-      color: var(--text-muted);
-    }
-
-    .modal-body {
+    .modal-grid {
       display: flex;
       flex-direction: column;
       gap: 6px;
-      max-height: 60vh;
-      overflow-y: auto;
-      padding-right: 2px;
+      margin-top: 4px;
     }
 
-    .field-group label {
-      display: block;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      margin-bottom: 2px;
-    }
-
-    .field-group input {
-      width: 100%;
-      border-radius: 10px;
+    .modal-input {
+      border-radius: 8px;
       border: 1px solid var(--border);
-      padding: 6px 8px;
-      font-size: 12px;
-      background: #F9FAFB;
+      padding: 7px 8px;
+      font-size: 13px;
       outline: none;
+      width: 100%;
+      background: #F9FAFB;
     }
 
-    .field-group input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 1px rgba(37,99,235,0.18);
-      background: #FFFFFF;
+    .modal-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-soft);
     }
 
-    .modal-footer {
+    .modal-actions {
       display: flex;
       justify-content: flex-end;
       gap: 6px;
-      margin-top: 8px;
+      margin-top: 4px;
     }
 
-    .btn-secondary {
-      background: #E5E7EB;
-      color: #111827;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: #059669;
-      color: #FFFFFF;
+    .chip-day {
       font-size: 11px;
-      display: none;
-      z-index: 30;
-      box-shadow: 0 8px 20px rgba(5,150,105,0.5);
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
     }
 
-    .toast.error {
-      background: var(--danger);
-      box-shadow: 0 8px 20px rgba(185,28,28,0.5);
+    .hidden-input {
+      display: none;
     }
   </style>
 </head>
 <body>
   <div class="app-shell">
-    <!-- Encabezado -->
+    <!-- Encabezado / pestaña superior -->
     <header class="top-bar">
       <div class="top-left">
-        <label class="file-label" for="dbInput" title="Cargar base de datos (.txt)">
-          <span>📂</span>
+        <label class="icon-button" title="Cargar base de datos (.txt)">
+          📁
+          <input id="fileInput" type="file" accept=".txt" class="hidden-input" />
         </label>
-        <input id="dbInput" type="file" accept=".txt" />
-        <div class="route-input">
-          <label for="routeInput">Ruta</label>
-          <input id="routeInput" type="text" placeholder="Ej. 17029" inputmode="numeric" />
+        <div class="route-group">
+          <span class="field-label">Ruta</span>
+          <input id="routeInput" type="text" class="input-sm" placeholder="17029" />
         </div>
       </div>
       <div class="top-right">
-        <div class="title">REGISTRO DE CLIENTES</div>
-        <div class="subtitle">Base TXT · RUTA · NEGOCIO · DIRECCIÓN</div>
+        <div class="top-title">Registro de clientes</div>
       </div>
     </header>
 
-    <!-- Día y búsqueda -->
-    <section class="section-card">
-      <div class="section-header">
-        <h2>Día y búsqueda</h2>
-        <div class="badge-today" id="todayBadge">Hoy: —</div>
-      </div>
-
-      <div class="day-row">
-        <div class="day-selector">
-          <label for="daySelect">Día de trabajo</label>
-          <select id="daySelect">
-            <option value="0">Lunes</option>
-            <option value="1">Martes</option>
-            <option value="2">Miércoles</option>
-            <option value="3">Jueves</option>
-            <option value="4">Viernes</option>
-            <option value="5">Sábado</option>
+    <!-- Selector de día -->
+    <section class="card">
+      <div class="row space-between" style="align-items: flex-end;">
+        <div style="flex: 1;">
+          <div class="field-label">Día</div>
+          <select id="daySelect" class="select">
+            <option value="Lunes">Lunes</option>
+            <option value="Martes">Martes</option>
+            <option value="Miércoles">Miércoles</option>
+            <option value="Jueves">Jueves</option>
+            <option value="Viernes">Viernes</option>
+            <option value="Sábado">Sábado</option>
           </select>
         </div>
-        <p class="day-note">
-          Detecta el día actual de forma automática, pero puedes cambiarlo para asignar clientes a otros días.
-        </p>
+        <div class="day-hint" id="dayHint" style="display:none;"></div>
       </div>
+    </section>
 
-      <div class="search-row">
-        <div class="search-field">
-          <label for="searchInput">Buscar cliente</label>
-          <input id="searchInput" type="text" placeholder="Por ruta o nombre del negocio" />
-          <span class="search-icon">🔍</span>
-        </div>
-        <button class="add-client-btn" id="btnNewClient" title="Crear cliente nuevo">
+    <!-- Búsqueda + nuevo cliente -->
+    <section class="card">
+      <div class="field-label" style="display:none;">Buscar cliente</div>
+      <div class="row">
+        <input id="searchInput" type="text" class="search-input" placeholder="Buscar por ruta o negocio" />
+        <button id="newClientBtn" class="icon-button" title="Nuevo cliente">
           +
         </button>
       </div>
-
-      <p class="hint-text">
-        Carga primero la base .txt. Puedes filtrar por <strong>ruta</strong> (campo superior) o por <strong>nombre del negocio</strong>.
-      </p>
-
-      <div class="result-list" id="resultList">
-        <!-- Resultados de búsqueda -->
-      </div>
-
-      <div class="actions-row">
-        <button class="btn btn-primary" id="btnSaveClient" disabled>
-          <span>✔</span> Guardar en día
+      <div id="searchStatus" class="status-text">Cargue una base de datos .txt para comenzar.</div>
+      <div id="results" class="results-list" style="display:none;"></div>
+      <div id="selectionInfo" class="row space-between" style="margin-top:4px;">
+        <div>
+          <div class="selected-badge" id="selectedBadge">Ningún cliente seleccionado.</div>
+          <div class="selected-name" id="selectedName"></div>
+        </div>
+        <button id="saveBtn" class="pill-button" style="min-width:96px;">
+          GUARDAR
         </button>
       </div>
     </section>
 
-    <!-- Botón REESTRUCTURA -->
-    <button class="btn btn-restruct" id="btnRestruct">
-      <span class="icon">⚙</span>
-      <span class="label">Reestructura</span>
-    </button>
-
-    <!-- Tabla reestructurada -->
-    <section class="section-res" style="margin-top: 10px;">
-      <div class="res-header">
-        <h2>Ruta reestructurada por día</h2>
-        <div class="res-count" id="summaryCount">0 clientes asignados</div>
-      </div>
-
-      <div id="restructuredContainer">
-        <div class="empty-state">
-          Aún no hay clientes asignados. Selecciona un cliente y usa el botón <strong>Guardar en día</strong>. Luego presiona
-          <strong>REESTRUCTURA</strong> para ver la tabla ordenada por día.
+    <!-- Reestructura -->
+    <section class="card restruct-card">
+      <div class="row space-between" style="align-items:center;">
+        <div>
+          <div class="field-label">Tabla reestructurada</div>
+          <div class="status-text" id="restructStatus">Presione Reestructura para generar la vista organizada por día.</div>
         </div>
       </div>
+      <div class="row" style="gap:6px; margin-top:4px;">
+        <button id="toggleRestructBtn" class="icon-button" title="Ocultar/mostrar tabla">
+        <span id="toggleVisual" class="toggle-switch on">
+          <span class="toggle-knob"></span>
+        </span>
+        </button>
+        <button id="clearBtn" class="icon-button" title="Limpiar asignaciones">🗑️</button>
+        <button id="restructBtn" class="pill-button full restruct-button">Reestructura</button>
+      </div>
+      <div id="restructContainer"></div>
     </section>
+
+    <div class="footer-space"></div>
   </div>
 
   <!-- Modal nuevo cliente -->
-  <div class="modal-backdrop" id="modalBackdrop">
+  <div id="modalBackdrop" class="modal-backdrop">
     <div class="modal">
-      <div class="modal-header">
-        <div class="modal-title">Nuevo cliente</div>
-        <button class="modal-close" id="modalCloseBtn">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="field-group">
-          <label for="newRoute">Ruta</label>
-          <input id="newRoute" type="text" placeholder="Ej. 17029" inputmode="numeric" />
+      <div class="modal-title">Nuevo cliente</div>
+      <div class="status-text" id="modalDayInfo"></div>
+      <div class="modal-grid">
+        <div>
+          <div class="field-label">Ruta</div>
+          <input id="modalRuta" type="text" class="modal-input" />
         </div>
-        <div class="field-group">
-          <label for="newCode">Código</label>
-          <input id="newCode" type="text" placeholder="Código interno" />
+        <div>
+          <div class="field-label">Código</div>
+          <input id="modalCodigo" type="text" class="modal-input" />
         </div>
-        <div class="field-group">
-          <label for="newName">Nombre del negocio</label>
-          <input id="newName" type="text" placeholder="Ej. Tienda Marissa" />
+        <div>
+          <div class="field-label">Nombre del negocio</div>
+          <input id="modalNombre" type="text" class="modal-input" />
         </div>
-        <div class="field-group">
-          <label for="newAddress">Dirección</label>
-          <input id="newAddress" type="text" placeholder="Dirección del negocio" />
+        <div>
+          <div class="field-label">Dirección</div>
+          <input id="modalDireccion" type="text" class="modal-input" />
         </div>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="modalCancelBtn">Cancelar</button>
-        <button class="btn btn-primary" id="modalSaveBtn">Guardar cliente</button>
+      <div class="modal-actions">
+        <button id="cancelModalBtn" class="pill-button secondary">Cancelar</button>
+        <button id="saveModalBtn" class="pill-button">Guardar</button>
       </div>
     </div>
   </div>
 
-  <!-- Toast -->
-  <div class="toast" id="toast"></div>
-
   <script>
-    // ====== Estado de la app ======
-    const DAY_NAMES = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+    // Estado principal
+    const state = {
+      baseData: [], // clientes de la base original + nuevos clientes
+      assignedByDay: { // clientes asignados por día
+        'Lunes': [],
+        'Martes': [],
+        'Miércoles': [],
+        'Jueves': [],
+        'Viernes': [],
+        'Sábado': []
+      },
+      selectedClient: null
+    };
 
-    /** Clientes cargados desde TXT o creados
-     * { ruta, codigo, nombre, direccion }
-     */
-    let clients = [];
+    const daysOrder = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
-    /** Asignaciones a días
-     * { dayIndex, ruta, codigo, nombre, direccion, timestamp }
-     */
-    let assignments = [];
+    // Elementos DOM
+    const fileInput = document.getElementById('fileInput');
+    const routeInput = document.getElementById('routeInput');
+    const daySelect = document.getElementById('daySelect');
+    const dayHint = document.getElementById('dayHint');
 
-    let selectedClientIndex = null; // índice en el arreglo clients
+    const searchInput = document.getElementById('searchInput');
+    const searchStatus = document.getElementById('searchStatus');
+    const resultsContainer = document.getElementById('results');
+    const selectedBadge = document.getElementById('selectedBadge');
+    const selectedName = document.getElementById('selectedName');
+    const saveBtn = document.getElementById('saveBtn');
 
-    // ====== Utilidades ======
-    function showToast(message, isError = false) {
-      const toast = document.getElementById("toast");
-      toast.textContent = message;
-      toast.classList.toggle("error", isError);
-      toast.style.display = "inline-flex";
-      setTimeout(() => {
-        toast.style.display = "none";
-      }, 2200);
+    const restructBtn = document.getElementById('restructBtn');
+    const restructStatus = document.getElementById('restructStatus');
+    const restructContainer = document.getElementById('restructContainer');
+    const toggleRestructBtn = document.getElementById('toggleRestructBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const toggleVisual = document.getElementById('toggleVisual');
+
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalRuta = document.getElementById('modalRuta');
+    const modalCodigo = document.getElementById('modalCodigo');
+    const modalNombre = document.getElementById('modalNombre');
+    const modalDireccion = document.getElementById('modalDireccion');
+    const modalDayInfo = document.getElementById('modalDayInfo');
+    const newClientBtn = document.getElementById('newClientBtn');
+    const cancelModalBtn = document.getElementById('cancelModalBtn');
+    const saveModalBtn = document.getElementById('saveModalBtn');
+
+    // Utilidades
+    function getTodayLabel() {
+      const d = new Date();
+      const jsDay = d.getDay(); // 0=Domingo ... 6=Sábado
+      const map = {
+        1: 'Lunes',
+        2: 'Martes',
+        3: 'Miércoles',
+        4: 'Jueves',
+        5: 'Viernes',
+        6: 'Sábado'
+      };
+      return map[jsDay] || 'Lunes';
     }
 
-    function getTodayDayIndex() {
-      const jsDay = new Date().getDay(); // 0=Domingo, 1=Lunes...
-      if (jsDay === 0) return 0; // Domingo -> Lunes (0)
-      if (jsDay >= 1 && jsDay <= 6) return jsDay - 1; // Lunes-Sábado
-      return 0;
-    }
-
-    function updateTodayBadge() {
-      const idx = getTodayDayIndex();
-      const badge = document.getElementById("todayBadge");
-      badge.textContent = "Hoy: " + DAY_NAMES[idx];
-    }
-
-    function refreshSummaryCount() {
-      const summary = document.getElementById("summaryCount");
-      const total = assignments.length;
-      summary.textContent = `${total} cliente${total === 1 ? "" : "s"} asignado${total === 1 ? "" : "s"}`;
-    }
-
-    // ====== Manejo de archivo TXT ======
     function parseTxtContent(text) {
-      const lines = text.split(/\r?\n/);
+      const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
       const parsed = [];
 
-      for (let line of lines) {
-        line = line.trim();
-        if (!line) continue;
-
-        // saltar encabezado
-        if (/^ruta\s*/i.test(line) && line.toLowerCase().includes("codigo")) {
-          continue;
+      for (const line of lines) {
+        let parts;
+        if (line.includes('\t')) {
+          parts = line.split('\t');
+        } else if (line.includes(';')) {
+          parts = line.split(';');
+        } else if (line.includes('|')) {
+          parts = line.split('|');
+        } else {
+          parts = line.split(',');
         }
 
-        // soportar separadores por tab, punto y coma o coma
-        const parts = line.split(/\t|;|,/).map(p => p.trim()).filter(p => p.length > 0);
         if (parts.length < 4) continue;
 
-        const ruta = parts[0];
-        const codigo = parts[1];
-        const nombre = parts[2];
-        const direccion = parts.slice(3).join(" "); // resto
-
-        parsed.push({ ruta, codigo, nombre, direccion });
+        const [ruta, codigo, nombre, direccion] = parts.map(p => p.trim());
+        parsed.push({
+          ruta: ruta || '',
+          codigo: codigo || '',
+          nombre: nombre || '',
+          direccion: direccion || ''
+        });
       }
 
       return parsed;
     }
 
-    function handleFileChange(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      if (!file.name.toLowerCase().endsWith(".txt")) {
-        showToast("Archivo inválido. Usa un .txt", true);
+    function renderSearchResults(list) {
+      resultsContainer.innerHTML = '';
+      if (!list || list.length === 0) {
+        resultsContainer.style.display = 'none';
         return;
       }
 
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const content = e.target.result;
-        const parsed = parseTxtContent(content);
-        if (!parsed.length) {
-          showToast("No se encontraron clientes en el archivo", true);
-          return;
+      list.forEach(client => {
+        const item = document.createElement('div');
+        item.className = 'result-item';
+        item.innerHTML = `
+          <div class="result-name">${client.nombre || 'Sin nombre'}</div>
+          <div class="result-meta">Ruta: ${client.ruta || '-'} · Código: ${client.codigo || '-'}</div>
+          <div class="result-meta">${client.direccion || ''}</div>
+        `;
+        item.addEventListener('click', () => {
+          state.selectedClient = client;
+          selectedBadge.textContent = 'Cliente seleccionado:';
+          selectedName.textContent = client.nombre || 'Sin nombre';
+        });
+        resultsContainer.appendChild(item);
+      });
+
+      resultsContainer.style.display = 'block';
+    }
+
+    function searchClients(query) {
+      const q = query.trim().toLowerCase();
+      if (!q) {
+        renderSearchResults([]);
+        if (state.baseData.length === 0) {
+          searchStatus.textContent = 'Cargue una base de datos .txt para comenzar.';
+        } else {
+          searchStatus.textContent = `Base cargada. Clientes disponibles: ${state.baseData.length}.`;
         }
-        clients = parsed;
-        selectedClientIndex = null;
-        renderSearchResults();
-        showToast("Base de datos cargada (" + clients.length + " clientes)");
-      };
-      reader.onerror = () => {
-        showToast("Error al leer el archivo", true);
-      };
-      reader.readAsText(file, "utf-8");
+        return;
+      }
+
+      const numeric = /^\d+$/.test(q);
+      const matches = state.baseData.filter(c => {
+        if (numeric) {
+          return (c.ruta || '').toLowerCase().includes(q) || (c.codigo || '').toLowerCase().includes(q);
+        }
+        return (c.nombre || '').toLowerCase().includes(q);
+      });
+
+      if (matches.length === 0) {
+        searchStatus.textContent = 'Sin coincidencias. Puede crear un cliente nuevo con el botón +';
+      } else {
+        searchStatus.textContent = `Coincidencias encontradas: ${matches.length}`;
+      }
+
+      renderSearchResults(matches);
     }
 
-    // ====== Búsqueda de clientes ======
-    function renderSearchResults() {
-      const list = document.getElementById("resultList");
-      list.innerHTML = "";
-
-      if (!clients.length) {
-        list.innerHTML = '<div class="empty-state" style="margin:2px;">Carga una base .txt o crea clientes nuevos.</div>';
-        return;
+    function ensureUniqueAssignment(day, client) {
+      const list = state.assignedByDay[day];
+      const key = (client.ruta || '') + '|' + (client.codigo || '') + '|' + (client.nombre || '');
+      const exists = list.some(c => (
+        (c.ruta || '') + '|' + (c.codigo || '') + '|' + (c.nombre || '')
+      ) === key);
+      if (!exists) {
+        list.push({ ...client });
       }
-
-      const query = document.getElementById("searchInput").value.trim().toLowerCase();
-      const routeFilter = document.getElementById("routeInput").value.trim();
-
-      const filtered = clients.map((c, index) => ({ ...c, index }))
-        .filter(c => {
-          const matchesRoute = routeFilter ? String(c.ruta).includes(routeFilter) : true;
-          const matchesQuery = query
-            ? c.nombre.toLowerCase().includes(query) || String(c.ruta).toLowerCase().includes(query)
-            : true;
-          return matchesRoute && matchesQuery;
-        });
-
-      if (!filtered.length) {
-        list.innerHTML = '<div class="empty-state" style="margin:2px;">Sin coincidencias. Ajusta tu búsqueda.</div>';
-        selectedClientIndex = null;
-        document.getElementById("btnSaveClient").disabled = true;
-        return;
-      }
-
-      filtered.forEach(item => {
-        const div = document.createElement("div");
-        div.className = "result-item" + (item.index === selectedClientIndex ? " selected" : "");
-        div.dataset.index = item.index;
-
-        const nameEl = document.createElement("div");
-        nameEl.className = "result-name";
-        nameEl.textContent = item.nombre;
-
-        const metaEl = document.createElement("div");
-        metaEl.className = "result-meta";
-        metaEl.textContent = `Ruta ${item.ruta} · Cod. ${item.codigo}`;
-
-        const addrEl = document.createElement("div");
-        addrEl.className = "result-meta";
-        addrEl.textContent = item.direccion;
-
-        div.appendChild(nameEl);
-        div.appendChild(metaEl);
-        div.appendChild(addrEl);
-
-        div.addEventListener("click", () => {
-          selectedClientIndex = item.index;
-          document.getElementById("btnSaveClient").disabled = false;
-          renderSearchResults(); // para refrescar selección
-        });
-
-        list.appendChild(div);
-      });
     }
 
-    // ====== Asignar cliente al día ======
-    function saveSelectedClientToDay() {
-      if (selectedClientIndex === null || selectedClientIndex < 0 || selectedClientIndex >= clients.length) {
-        showToast("Selecciona un cliente primero", true);
-        return;
-      }
-      const client = clients[selectedClientIndex];
-      const dayIndex = parseInt(document.getElementById("daySelect").value, 10);
+    function renderRestruct() {
+      restructContainer.innerHTML = '';
 
-      assignments.push({
-        dayIndex,
-        ruta: client.ruta,
-        codigo: client.codigo,
-        nombre: client.nombre,
-        direccion: client.direccion,
-        timestamp: Date.now()
-      });
+      let hasData = false;
+      daysOrder.forEach((dayLabel, idx) => {
+        const list = state.assignedByDay[dayLabel];
+        if (!list || list.length === 0) return;
+        hasData = true;
 
-      showToast(`Cliente asignado a ${DAY_NAMES[dayIndex]}`);
-      refreshSummaryCount();
-      renderRestructuredTable(); // para ver el cambio de una vez
-    }
+        const block = document.createElement('div');
+        block.className = 'day-block';
 
-    // ====== REESTRUCTURA ======
-    function renderRestructuredTable() {
-      const container = document.getElementById("restructuredContainer");
-      container.innerHTML = "";
+        const header = document.createElement('div');
+        header.className = 'day-header';
+        header.textContent = `DÍA ${idx + 1} – ${dayLabel.toUpperCase()}`;
+        block.appendChild(header);
 
-      if (!assignments.length) {
-        container.innerHTML = '<div class="empty-state">Aún no hay clientes asignados. Usa "Guardar en día" para agregar clientes por día.</div>';
-        refreshSummaryCount();
-        return;
-      }
+        const tableWrapper = document.createElement('div');
+        tableWrapper.className = 'table-wrapper';
 
-      // Ordenar por día y luego por timestamp (orden de agregado)
-      const sorted = [...assignments].sort((a, b) => {
-        if (a.dayIndex !== b.dayIndex) return a.dayIndex - b.dayIndex;
-        return a.timestamp - b.timestamp;
-      });
-
-      // Agrupar por día
-      const groups = {};
-      sorted.forEach(item => {
-        if (!groups[item.dayIndex]) groups[item.dayIndex] = [];
-        groups[item.dayIndex].push(item);
-      });
-
-      Object.keys(groups).sort((a, b) => a - b).forEach(dayKey => {
-        const dayIndex = parseInt(dayKey, 10);
-        const dayClients = groups[dayIndex];
-
-        const block = document.createElement("div");
-        block.className = "day-block";
-
-        const header = document.createElement("div");
-        header.className = "day-block-header";
-        const diaNum = dayIndex + 1; // Día 1 = Lunes
-        const title = document.createElement("div");
-        title.innerHTML = `<strong>DÍA ${diaNum} – ${DAY_NAMES[dayIndex].toUpperCase()}</strong>`;
-        const count = document.createElement("span");
-        count.textContent = `${dayClients.length} cliente${dayClients.length === 1 ? "" : "s"}`;
-
-        header.appendChild(title);
-        header.appendChild(count);
-
-        const table = document.createElement("table");
-        table.className = "day-table";
-        const thead = document.createElement("thead");
+        const table = document.createElement('table');
+        const thead = document.createElement('thead');
         thead.innerHTML = `
           <tr>
             <th>#</th>
-            <th>Negocio</th>
             <th>Ruta</th>
             <th>Código</th>
+            <th>Negocio</th>
             <th>Dirección</th>
           </tr>
         `;
-        const tbody = document.createElement("tbody");
+        table.appendChild(thead);
 
-        dayClients.forEach((c, idx) => {
-          const tr = document.createElement("tr");
+        const tbody = document.createElement('tbody');
+        list.forEach((client, index) => {
+          const tr = document.createElement('tr');
           tr.innerHTML = `
-            <td>${idx + 1}</td>
-            <td>${c.nombre}</td>
-            <td>${c.ruta}</td>
-            <td>${c.codigo}</td>
-            <td>${c.direccion}</td>
+            <td>${index + 1}</td>
+            <td>${client.ruta || ''}</td>
+            <td>${client.codigo || ''}</td>
+            <td>${client.nombre || ''}</td>
+            <td>${client.direccion || ''}</td>
           `;
           tbody.appendChild(tr);
         });
 
-        table.appendChild(thead);
         table.appendChild(tbody);
-
-        block.appendChild(header);
-        block.appendChild(table);
-        container.appendChild(block);
+        tableWrapper.appendChild(table);
+        block.appendChild(tableWrapper);
+        restructContainer.appendChild(block);
       });
 
-      refreshSummaryCount();
+      if (!hasData) {
+        restructStatus.textContent = 'Sin clientes asignados todavía. Guarde clientes para ver la reestructura.';
+      } else {
+        restructStatus.textContent = 'Vista reestructurada generada por día. Use Reestructura cuando actualice la asignación.';
+      }
     }
 
-    // ====== Modal nuevo cliente ======
     function openModal() {
-      const backdrop = document.getElementById("modalBackdrop");
-      const routeInputTop = document.getElementById("routeInput");
-      const newRoute = document.getElementById("newRoute");
-
-      // Prellenar ruta con la ruta del encabezado si existe
-      newRoute.value = routeInputTop.value.trim();
-
-      backdrop.style.display = "flex";
-      document.getElementById("newCode").value = "";
-      document.getElementById("newName").value = "";
-      document.getElementById("newAddress").value = "";
-      document.getElementById("newName").focus();
+      modalRuta.value = routeInput.value.trim();
+      modalCodigo.value = '';
+      modalNombre.value = '';
+      modalDireccion.value = '';
+      const day = daySelect.value;
+      modalDayInfo.innerHTML = `Se asignará al día <span class="chip-day">${day}</span>`;
+      modalBackdrop.style.display = 'flex';
     }
 
     function closeModal() {
-      const backdrop = document.getElementById("modalBackdrop");
-      backdrop.style.display = "none";
+      modalBackdrop.style.display = 'none';
     }
 
-    function saveNewClient() {
-      const ruta = document.getElementById("newRoute").value.trim();
-      const codigo = document.getElementById("newCode").value.trim();
-      const nombre = document.getElementById("newName").value.trim();
-      const direccion = document.getElementById("newAddress").value.trim();
+    // Eventos
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        try {
+          const text = String(evt.target.result || '');
+          const parsed = parseTxtContent(text);
+          state.baseData = parsed;
+          searchStatus.textContent = `Base cargada: ${parsed.length} clientes.`;
+          searchClients(searchInput.value || '');
+        } catch (err) {
+          console.error(err);
+          searchStatus.textContent = 'Error al leer el archivo. Verifique el formato.';
+          searchStatus.classList.add('error');
+        }
+      };
+      reader.readAsText(file, 'utf-8');
+    });
+
+    searchInput.addEventListener('input', (e) => {
+      searchClients(e.target.value || '');
+    });
+
+    saveBtn.addEventListener('click', () => {
+      if (!state.selectedClient) {
+        searchStatus.textContent = 'Seleccione un cliente de la lista o cree uno nuevo.';
+        searchStatus.classList.add('error');
+        return;
+      }
+      searchStatus.classList.remove('error');
+
+      const day = daySelect.value;
+      ensureUniqueAssignment(day, state.selectedClient);
+      restructStatus.textContent = `Cliente asignado a ${day}. Presione Reestructura para actualizar la tabla.`;
+    });
+
+    toggleRestructBtn.addEventListener('click', () => {
+      const isHidden = restructContainer.style.display === 'none';
+      if (isHidden) {
+        restructContainer.style.display = 'block';
+        toggleVisual.classList.add('on');
+      } else {
+        restructContainer.style.display = 'none';
+        toggleVisual.classList.remove('on');
+      }
+    });
+
+    clearBtn.addEventListener('click', () => {
+      const ok = confirm('¿Está seguro de borrar todas las asignaciones y limpiar la tabla?');
+      if (!ok) return;
+
+      Object.keys(state.assignedByDay).forEach(day => {
+        state.assignedByDay[day] = [];
+      });
+      restructContainer.innerHTML = '';
+      restructStatus.textContent = 'Datos limpiados. Puede comenzar de nuevo.';
+    });
+
+    restructBtn.addEventListener('click', () => {
+      renderRestruct();
+    });
+
+    newClientBtn.addEventListener('click', () => {
+      if (state.baseData.length === 0) {
+        // Permitimos crear aunque no haya base, pero lo indicamos
+        searchStatus.textContent = 'Creando cliente nuevo sin base cargada.';
+      }
+      openModal();
+    });
+
+    cancelModalBtn.addEventListener('click', () => {
+      closeModal();
+    });
+
+    saveModalBtn.addEventListener('click', () => {
+      const ruta = modalRuta.value.trim();
+      const codigo = modalCodigo.value.trim();
+      const nombre = modalNombre.value.trim();
+      const direccion = modalDireccion.value.trim();
 
       if (!ruta || !codigo || !nombre || !direccion) {
-        showToast("Completa todos los campos del cliente", true);
+        alert('Complete todos los campos del nuevo cliente.');
         return;
       }
 
       const newClient = { ruta, codigo, nombre, direccion };
-      clients.push(newClient);
 
-      // Asignar automáticamente al día seleccionado
-      const dayIndex = parseInt(document.getElementById("daySelect").value, 10);
-      assignments.push({
-        dayIndex,
-        ...newClient,
-        timestamp: Date.now()
-      });
+      // Agregar a base interna para futuras búsquedas
+      state.baseData.push(newClient);
+
+      // Asignar al día seleccionado
+      const day = daySelect.value;
+      ensureUniqueAssignment(day, newClient);
 
       closeModal();
-      showToast("Cliente creado y asignado al día");
 
-      // Actualizar lista de búsqueda y tabla reestructurada
-      selectedClientIndex = clients.length - 1;
-      document.getElementById("btnSaveClient").disabled = false;
-      renderSearchResults();
-      renderRestructuredTable();
+      // Actualizar mensajes y selección
+      state.selectedClient = newClient;
+      selectedBadge.textContent = 'Cliente creado y asignado:';
+      selectedName.textContent = newClient.nombre;
+      searchStatus.textContent = `Cliente nuevo agregado a la base y asignado a ${day}.`;
+
+      // Si hay texto de búsqueda, refrescar
+      if (searchInput.value.trim()) {
+        searchClients(searchInput.value || '');
+      }
+    });
+
+    // Cerrar modal al tocar fuera
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) {
+        closeModal();
+      }
+    });
+
+    // Inicialización
+    function initDaySelector() {
+      const todayLabel = getTodayLabel();
+      daySelect.value = todayLabel;
+      dayHint.textContent = `Día detectado: ${todayLabel}. Puede cambiarlo para asignar a otro día.`;
     }
 
-    // ====== Inicialización ======
-    document.addEventListener("DOMContentLoaded", () => {
-      // Día actual
-      const todayIndex = getTodayDayIndex();
-      const daySelect = document.getElementById("daySelect");
-      daySelect.value = String(todayIndex);
-      updateTodayBadge();
-
-      // Eventos
-      document.getElementById("dbInput").addEventListener("change", handleFileChange);
-      document.getElementById("searchInput").addEventListener("input", renderSearchResults);
-      document.getElementById("routeInput").addEventListener("input", renderSearchResults);
-      document.getElementById("btnSaveClient").addEventListener("click", saveSelectedClientToDay);
-      document.getElementById("btnRestruct").addEventListener("click", () => {
-        renderRestructuredTable();
-        showToast("Tabla reestructurada actualizada");
-      });
-
-      document.getElementById("btnNewClient").addEventListener("click", openModal);
-      document.getElementById("modalCloseBtn").addEventListener("click", closeModal);
-      document.getElementById("modalCancelBtn").addEventListener("click", closeModal);
-      document.getElementById("modalSaveBtn").addEventListener("click", saveNewClient);
-
-      document.getElementById("modalBackdrop").addEventListener("click", (e) => {
-        if (e.target.id === "modalBackdrop") {
-          closeModal();
-        }
-      });
-
-      // Render inicial
-      renderSearchResults();
-      renderRestructuredTable();
+    document.addEventListener('DOMContentLoaded', () => {
+      initDaySelector();
     });
   </script>
 </body>
