@@ -87,6 +87,14 @@
       max-width: 50%;
     }
 
+    .top-right span {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
     .field-label {
       font-size: 11px;
       font-weight: 600;
@@ -438,9 +446,6 @@
           <span class="field-label">Ruta</span>
           <input id="routeInput" type="text" class="input-sm" placeholder="17029" />
         </div>
-        <button id="saveStateBtn" class="pill-button secondary" style="padding:4px 10px;font-size:11px;">
-          Guardar
-        </button>
       </div>
       <div class="top-right">
         <div class="top-title">Registro de clientes</div>
@@ -497,9 +502,9 @@
       </div>
       <div class="row" style="gap:6px; margin-top:4px;">
         <button id="toggleRestructBtn" class="icon-button" title="Ocultar/mostrar tabla">
-          <span id="toggleVisual" class="toggle-switch on">
-            <span class="toggle-knob"></span>
-          </span>
+        <span id="toggleVisual" class="toggle-switch on">
+          <span class="toggle-knob"></span>
+        </span>
         </button>
         <button id="clearBtn" class="icon-button" title="Limpiar asignaciones">🗑️</button>
         <button id="excelBtn" class="pill-button secondary" style="padding:4px 10px;font-size:11px;">EXCEL</button>
@@ -561,7 +566,6 @@
     // Elementos DOM
     const fileInput = document.getElementById('fileInput');
     const routeInput = document.getElementById('routeInput');
-    const saveStateBtn = document.getElementById('saveStateBtn');
     const daySelect = document.getElementById('daySelect');
     const dayHint = document.getElementById('dayHint');
 
@@ -589,59 +593,6 @@
     const newClientBtn = document.getElementById('newClientBtn');
     const cancelModalBtn = document.getElementById('cancelModalBtn');
     const saveModalBtn = document.getElementById('saveModalBtn');
-
-    // -------- Persistencia en localStorage ----------
-    const STORAGE_KEYS = {
-      baseData: 'rc_baseData',
-      assignedByDay: 'rc_assignedByDay',
-      route: 'rc_route'
-    };
-
-    function persistState() {
-      try {
-        localStorage.setItem(STORAGE_KEYS.baseData, JSON.stringify(state.baseData));
-        localStorage.setItem(STORAGE_KEYS.assignedByDay, JSON.stringify(state.assignedByDay));
-        localStorage.setItem(STORAGE_KEYS.route, routeInput.value.trim() || '');
-      } catch (e) {
-        console.warn('No se pudo guardar en localStorage', e);
-      }
-    }
-
-    function loadPersistedState() {
-      try {
-        const baseRaw = localStorage.getItem(STORAGE_KEYS.baseData);
-        const assignedRaw = localStorage.getItem(STORAGE_KEYS.assignedByDay);
-        const routeRaw = localStorage.getItem(STORAGE_KEYS.route);
-
-        if (routeRaw) {
-          routeInput.value = routeRaw;
-        }
-
-        if (baseRaw) {
-          const parsedBase = JSON.parse(baseRaw);
-          if (Array.isArray(parsedBase)) {
-            state.baseData = parsedBase;
-            searchStatus.textContent = `Base cargada: ${parsedBase.length} clientes (guardada).`;
-          }
-        }
-
-        if (assignedRaw) {
-          const parsedAssigned = JSON.parse(assignedRaw) || {};
-          daysOrder.forEach(d => {
-            if (Array.isArray(parsedAssigned[d])) {
-              state.assignedByDay[d] = parsedAssigned[d];
-            }
-          });
-        }
-
-        const hasAssigned = daysOrder.some(d => (state.assignedByDay[d] || []).length > 0);
-        if (hasAssigned) {
-          renderRestruct();
-        }
-      } catch (e) {
-        console.warn('No se pudo leer localStorage', e);
-      }
-    }
 
     // Utilidades
     function getTodayLabel() {
@@ -840,7 +791,6 @@
           state.baseData = parsed;
           searchStatus.textContent = `Base cargada: ${parsed.length} clientes.`;
           searchClients(searchInput.value || '');
-          persistState();
         } catch (err) {
           console.error(err);
           searchStatus.textContent = 'Error al leer el archivo. Verifique el formato.';
@@ -848,15 +798,6 @@
         }
       };
       reader.readAsText(file, 'utf-8');
-    });
-
-    saveStateBtn.addEventListener('click', () => {
-      if (state.baseData.length === 0 && !routeInput.value.trim()) {
-        alert('No hay datos para guardar. Cargue una base y/o escriba una ruta.');
-        return;
-      }
-      persistState();
-      searchStatus.textContent = 'Datos principales guardados en el dispositivo.';
     });
 
     searchInput.addEventListener('input', (e) => {
@@ -872,8 +813,14 @@
       searchStatus.classList.remove('error');
 
       const day = daySelect.value;
-      ensureUniqueAssignment(day, state.selectedClient);
-      persistState();
+      const currentRoute = routeInput.value.trim();
+      const baseClient = state.selectedClient;
+      const clientForDay = { ...baseClient };
+      if (currentRoute) {
+        clientForDay.ruta = currentRoute;
+      }
+
+      ensureUniqueAssignment(day, clientForDay);
       restructStatus.textContent = `Cliente asignado a ${day}. Presione Reestructura para actualizar la tabla.`;
     });
 
@@ -897,7 +844,6 @@
       });
       restructContainer.innerHTML = '';
       restructStatus.textContent = 'Datos limpiados. Puede comenzar de nuevo.';
-      persistState();
     });
 
     restructBtn.addEventListener('click', () => {
@@ -912,13 +858,14 @@
       }
 
       const headers = ['DÍA','ORDEN','RUTA','CÓDIGO','NOMBRE DEL NEGOCIO','DIRECCIÓN'];
-      let rowsHtml = '';
+      const rows = [];
+      rows.push(headers);
 
       daysOrder.forEach((dayLabel, idx) => {
         const list = state.assignedByDay[dayLabel];
         if (!list || list.length === 0) return;
-        const dayTitle = `DÍA ${idx + 1} – ${dayLabel.toUpperCase()}`;
-        rowsHtml += `<tr><td colspan="6" style="background:#E3ECF5;font-weight:bold;border:1px solid #D0D4DC;">${dayTitle}</td></tr>`;
+        // Fila título de día
+        rows.push([`DÍA ${idx + 1} – ${dayLabel.toUpperCase()}`,'','','','','']);
         list.forEach((client, index) => {
           const dia = dayLabel;
           const orden = index + 1;
@@ -926,41 +873,24 @@
           const codigo = client.codigo || '';
           const nombre = client.nombre || '';
           const direccion = client.direccion || '';
-          rowsHtml += `<tr>
-            <td style="border:1px solid #D0D4DC;">${dia}</td>
-            <td style="border:1px solid #D0D4DC;">${orden}</td>
-            <td style="border:1px solid #D0D4DC;">${ruta}</td>
-            <td style="border:1px solid #D0D4DC;">${codigo}</td>
-            <td style="border:1px solid #D0D4DC;">${nombre}</td>
-            <td style="border:1px solid #D0D4DC;">${direccion}</td>
-          </tr>`;
+          rows.push([dia, String(orden), ruta, codigo, nombre, direccion]);
         });
       });
 
-      const html = `<!DOCTYPE html><html><head><meta charset="utf-8" />
-        <style>
-          table { border-collapse: collapse; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 11px; }
-          th { background:#0F5C9A; color:#FFFFFF; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; }
-          th, td { padding:4px 6px; }
-        </style>
-      </head><body>
-      <table>
-        <thead>
-          <tr>
-            ${headers.map(h => `<th>${h}</th>`).join('')}
-          </tr>
-        </thead>
-        <tbody>
-          ${rowsHtml}
-        </tbody>
-      </table>
-      </body></html>`;
+      // Construir CSV (usamos ; como separador para que se vea bien en configuraciones ES)
+      const csvContent = rows
+        .map(cols => cols.map(v => {
+          const s = (v ?? '').toString().replace(/"/g, '""');
+          return `"${s}"`;
+        }).join(';'))
+        .join('
+');
 
-      const blob = new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+      const blob = new Blob(['﻿' + csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'Base_reestructurada.xls';
+      link.download = 'Base_reestructurada.csv';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -969,6 +899,7 @@
 
     newClientBtn.addEventListener('click', () => {
       if (state.baseData.length === 0) {
+        // Permitimos crear aunque no haya base, pero lo indicamos
         searchStatus.textContent = 'Creando cliente nuevo sin base cargada.';
       }
       openModal();
@@ -997,7 +928,6 @@
       // Asignar al día seleccionado
       const day = daySelect.value;
       ensureUniqueAssignment(day, newClient);
-      persistState();
 
       closeModal();
 
@@ -1029,7 +959,6 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       initDaySelector();
-      loadPersistedState();
     });
   </script>
 </body>
