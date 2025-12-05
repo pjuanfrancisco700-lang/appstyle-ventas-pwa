@@ -148,7 +148,7 @@
           </svg>
         </button>
       </nav>
-      <button class="icon-sync" id="btn-sync" title="Enviar datos">
+      <button class="icon-sync" id="btn-sync" title="Enviar datos al supervisor">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <line x1="12" y1="19" x2="12" y2="5"/>
           <polyline points="6 9 12 3 18 9"/>
@@ -448,6 +448,7 @@
         };
       });
     }
+
     const uid = () => (self.crypto && crypto.randomUUID ? crypto.randomUUID() : ('id-' + Date.now() + '-' + Math.random().toString(16).slice(2)));
 
     const DEFAULT_DB = {
@@ -506,8 +507,7 @@
       dias: 26,
       presupuesto: 0,
       vscMeta: 400,
-      syncUrl: '',
-      token: ''
+      syncUrl: ''
     }))(new Date());
 
     let db = load(KEY_CLIENTS) || DEFAULT_DB;
@@ -544,7 +544,8 @@
       if ($('#cfg-vsc')) $('#cfg-vsc').value = cfg.vscMeta;
       if ($('#cfg-syncurl')) $('#cfg-syncurl').value = cfg.syncUrl || '';
 
-      if ($('#btn-guardar')) $('#btn-guardar').onclick = () => {
+      const btnGuardar = $('#btn-guardar');
+      if (btnGuardar) btnGuardar.onclick = () => {
         cfg.mes = +m.value;
         cfg.anio = +a.value;
         cfg.ruta = $('#cfg-ruta').value.trim() || cfg.ruta;
@@ -552,14 +553,14 @@
         cfg.presupuesto = Math.max(0, +$('#cfg-presupuesto').value || 0);
         const vscEl = $('#cfg-vsc');
         cfg.vscMeta = vscEl ? Math.max(0, +vscEl.value || 0) : cfg.vscMeta;
-        const syncEl = $('#cfg-syncurl');
-        cfg.syncUrl = syncEl ? (syncEl.value || '').trim() : cfg.syncUrl;
+        cfg.syncUrl = ($('#cfg-syncurl')?.value || '').trim();
         save(KEY_CFG, cfg);
         renderAll();
         alert('Configuración guardada');
       };
 
-      if ($('#btn-reset')) $('#btn-reset').onclick = () => {
+      const btnReset = $('#btn-reset');
+      if (btnReset) btnReset.onclick = () => {
         if (confirm('Esto borrará todas las ventas del mes actual. ¿Continuar?')) {
           sales = sales.filter(v => !(v.ruta === cfg.ruta && v.anio === cfg.anio && v.mes === cfg.mes));
           save(KEY_SALES, sales);
@@ -588,7 +589,8 @@
 
     if ($('#venta-tipo')) $('#venta-tipo').addEventListener('change', buildClientSelects);
 
-    if ($('#add-venta')) $('#add-venta').onclick = () => addVenta(
+    const btnAddVenta = $('#add-venta');
+    if (btnAddVenta) btnAddVenta.onclick = () => addVenta(
       $('#venta-tipo').value,
       $('#venta-cliente').value,
       +$('#venta-monto').value || 0
@@ -617,17 +619,6 @@
       save(KEY_SALES, sales);
       if ($('#venta-monto')) $('#venta-monto').value = '';
       renderAll();
-
-      // Envío automático desactivado: solo con la flecha azul.
-      if (false && cfg.syncUrl) {
-        try {
-          await fetch(cfg.syncUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(v)
-          });
-        } catch (e) {}
-      }
     }
 
     function renderVentasTable() {
@@ -683,8 +674,9 @@
         .sort((a, b) => b.fecha.localeCompare(a.fecha));
     }
 
-    if (document.getElementById('btn-add-cliente')) {
-      document.getElementById('btn-add-cliente').onclick = () => {
+    const btnAddCliente = document.getElementById('btn-add-cliente');
+    if (btnAddCliente) {
+      btnAddCliente.onclick = () => {
         const nombre = document.getElementById('cliente-nombre').value.trim();
         const tipo = document.getElementById('cliente-tipo').value;
         if (!nombre) return alert('Escribe el nombre del negocio');
@@ -699,8 +691,9 @@
       };
     }
 
-    if (document.getElementById('toggle-db')) {
-      document.getElementById('toggle-db').onclick = () => {
+    const toggleDbBtn = document.getElementById('toggle-db');
+    if (toggleDbBtn) {
+      toggleDbBtn.onclick = () => {
         const el = document.getElementById('db-list');
         el.style.display = el.style.display === 'none' ? 'block' : 'none';
         if (el.style.display === 'block') renderDBList();
@@ -795,62 +788,67 @@
       }[m] || m));
     }
 
+    async function syncSales() {
+      if (!cfg.syncUrl) {
+        alert('Configura el enlace de Google Apps Script en la pestaña de Configuración.');
+        return;
+      }
+      const list = currentSales();
+      if (!list.length) {
+        alert('No hay ventas registradas para enviar.');
+        return;
+      }
+      const payload = {
+        ruta: cfg.ruta,
+        mes: cfg.mes,
+        anio: cfg.anio,
+        ventas: list.map(v => ({
+          id: v.id,
+          fecha: v.fecha,
+          tipo: v.tipo,
+          cliente: v.cliente,
+          monto: v.monto,
+          ruta: v.ruta,
+          mes: v.mes,
+          anio: v.anio
+        }))
+      };
+      try {
+        await fetch(cfg.syncUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        alert('Datos enviados al supervisor (revisa la hoja de cálculo).');
+      } catch (e) {
+        console.error(e);
+        alert('No se pudieron enviar los datos. Verifica tu conexión y el enlace de Apps Script.');
+      }
+    }
+
+    const btnSync = $('#btn-sync');
+    if (btnSync) btnSync.onclick = syncSales;
+
     function renderAll() {
       buildClientSelects();
       renderVentasTable();
       renderDashboard();
     }
 
-    // --------- NUEVA FUNCIÓN: ENVIAR DATOS AGRUPADOS ---------
-    async function syncSales() {
-      if (!cfg.syncUrl || cfg.syncUrl.trim() === '') {
-        alert('Configura primero el enlace de Google Apps Script en la sección de parámetros.');
-        return;
-      }
-
-      const ventas = currentSales();
-      if (!ventas.length) {
-        alert('No hay ventas registradas para enviar.');
-        return;
-      }
-
-      const payload = {
-        ruta: cfg.ruta,
-        mes: cfg.mes,
-        anio: cfg.anio,
-        ventas
-      };
-
-      try {
-        const res = await fetch(cfg.syncUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        alert('Datos enviados correctamente.');
-      } catch (e) {
-        alert('No se pudieron enviar los datos. Verifica tu conexión y el enlace de Apps Script.');
-      }
-    }
-
-    // Inicializar todo
     initTabs();
     initConfigSelectors();
 
-    if ($('#btn-sync')) {
-      $('#btn-sync').onclick = syncSales;
-    }
-
-    if ($('#btn-themes')) {
-      $('#btn-themes').onclick = () => {
+    const btnThemes = $('#btn-themes');
+    if (btnThemes) {
+      btnThemes.onclick = () => {
         const m = document.getElementById('modal-themes');
         if (m) m.classList.add('active');
       };
     }
-    if (document.getElementById('themes-close')) {
-      document.getElementById('themes-close').onclick = () => {
+    const themesClose = document.getElementById('themes-close');
+    if (themesClose) {
+      themesClose.onclick = () => {
         const m = document.getElementById('modal-themes');
         if (m) m.classList.remove('active');
       };
