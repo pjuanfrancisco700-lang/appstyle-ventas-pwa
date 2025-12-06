@@ -294,6 +294,13 @@
       color: var(--text-soft);
       background: #F9FAFB;
       cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+    }
+
+    .icon-trash.active-trash {
+      background: #FEE2E2;
+      border-color: #F97316;
+      transform: scale(0.96);
     }
 
     .bottom-buttons {
@@ -369,8 +376,9 @@
     }
 
     .suggestions-item {
-      padding: 6px 10px;
+      padding: 8px 12px;
       cursor: pointer;
+      font-size: 14px;
     }
 
     .suggestions-item:hover {
@@ -563,9 +571,9 @@
         <div class="toggle-knob"></div>
       </div>
       <span class="helper-text">Mostrar solo clientes guardados.</span>
-      <div id="btnLimpiarTodo" class="icon-trash" title="Borrar todos los registros guardados">
-        🗑
-      </div>
+      
+      <div id="btnLimpiarTodo" class="icon-trash" title="Borrar todo">🗑</div>
+      <div id="estadoLimpieza" class="status-text"></div>
     </div>
 
     <div class="bottom-buttons">
@@ -886,23 +894,32 @@
       ]);
     });
 
-    const tsv = filas
-      .map(row => row.map(v => `"${(v || "").toString().replace(/"/g, '""')}"`).join("\t"))
-      .join("\r\n");
+    // Generar CSV (opción B): separado por comas, compatible con Excel
+    const csv = filas
+      .map(row => row
+        .map(v => {
+          const value = (v || "").toString().replace(/"/g, '""');
+          return `"${value}"`;
+        })
+        .join(","))
+      .join("
+");
 
-    const blob = new Blob([tsv], {
-      type: "text/tab-separated-values;charset=utf-8;"
+    const blob = new Blob([csv], {
+      type: "text/csv;charset=utf-8;"
     });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `restructura_r${ruta}_${dia}.txt`;
+    a.download = `restructura_r${ruta}_${dia}.csv`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }
 
+  // ============================
+  // GUARDAR REGISTRO
   // ============================
   // GUARDAR REGISTRO
   // ============================
@@ -1002,10 +1019,38 @@
   // LIMPIAR REGISTROS
   // ============================
   function limpiarRegistros() {
-    if (!confirm("¿Borrar todos los registros guardados en este dispositivo?")) return;
-    registrosGuardados = [];
+    const ruta = document.getElementById("ruta").value.trim();
+    const dia = document.getElementById("dia").value;
+
+    // Mensaje claro: solo se borran los registros de la ruta y día actuales
+    const mensaje = ruta
+      ? `Se borrarán todos los registros guardados de la ruta ${ruta} para el día ${dia}. ¿Desea continuar?`
+      : `Se borrarán todos los registros guardados para el día ${dia}. ¿Desea continuar?`;
+
+    if (!confirm(mensaje)) return;
+
+    // Elimina SOLO los registros de la tabla actual (ruta + día seleccionados)
+    registrosGuardados = registrosGuardados.filter(
+      r => !(r.ruta === ruta && r.diaVisita === dia)
+    );
+
     guardarEnLocalStorage();
     construirTabla();
+
+    const msg = document.getElementById("estadoLimpieza");
+    if (msg) {
+      msg.textContent = "Registros de la tabla actual eliminados correctamente.";
+      msg.className = "status-text status-ok";
+      setTimeout(() => {
+        msg.textContent = "";
+      }, 3000);
+    }
+
+    const trash = document.getElementById("btnLimpiarTodo");
+    if (trash) {
+      trash.classList.add("active-trash");
+      setTimeout(() => trash.classList.remove("active-trash"), 180);
+    }
   }
 
   // ============================
