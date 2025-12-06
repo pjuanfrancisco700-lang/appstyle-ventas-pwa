@@ -502,7 +502,7 @@
         <label class="field-label">Ruta</label>
         <div class="input-shell" id="rutaInputShell">
           <div class="icon-folder" title="Cargar base .txt">
-            📁
+            &#128193;
           </div>
           <input id="ruta" type="number" value="17029" min="0" />
         </div>
@@ -571,7 +571,6 @@
         <div class="toggle-knob"></div>
       </div>
       <span class="helper-text">Mostrar solo clientes guardados.</span>
-      
       <div id="btnLimpiarTodo" class="icon-trash" title="Borrar todo">🗑</div>
       <div id="estadoLimpieza" class="status-text"></div>
     </div>
@@ -852,7 +851,7 @@
   }
 
   // ============================
-  // EXPORTAR EXCEL (TSV)
+  // EXPORTAR EXCEL (CSV)
   // ============================
   function descargarExcel() {
     const ruta = document.getElementById("ruta").value.trim();
@@ -902,8 +901,7 @@
           return `"${value}"`;
         })
         .join(","))
-      .join("
-");
+      .join("\r\n");
 
     const blob = new Blob([csv], {
       type: "text/csv;charset=utf-8;"
@@ -918,8 +916,6 @@
     URL.revokeObjectURL(url);
   }
 
-  // ============================
-  // GUARDAR REGISTRO
   // ============================
   // GUARDAR REGISTRO
   // ============================
@@ -1092,6 +1088,19 @@
     // Test 3: archivo vacío
     const r3 = parsearTxtClientes("");
     console.assert(r3.length === 0, "Test3: sin clientes en texto vacío");
+
+    // Test 4: bloque incompleto (7 líneas -> solo 1 cliente válido)
+    const txt4 = [
+      "2000-5555555",
+      "TIENDA PRUEBA",
+      "JUAN PEREZ",
+      "GUATEMALA, ZONA 1",
+      "CF",
+      "CODIGO-INCOMPLETO",
+      "SOLO DOS LINEAS"
+    ].join("\n");
+    const r4 = parsearTxtClientes(txt4);
+    console.assert(r4.length === 1, "Test4: solo 1 cliente válido por bloque completo");
 
     console.groupEnd();
   }
