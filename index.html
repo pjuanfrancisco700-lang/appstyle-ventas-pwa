@@ -502,7 +502,7 @@
         <label class="field-label">Ruta</label>
         <div class="input-shell" id="rutaInputShell">
           <div class="icon-folder" title="Cargar base .txt">
-            &#128193;
+            &#x1F4C2;
           </div>
           <input id="ruta" type="number" value="17029" min="0" />
         </div>
@@ -883,7 +883,7 @@
     datos.forEach(r => {
       filas.push([
         r.ruta,
-        r.diaVisita,
+        (r.diaVisita || "").toString().toUpperCase(),
         r.orden,
         r.codigo,
         r.nombreNegocio,
@@ -893,14 +893,14 @@
       ]);
     });
 
-    // Generar CSV (opción B): separado por comas, compatible con Excel
+    // Generar CSV con separador ";" (formato típico de Excel en español)
     const csv = filas
       .map(row => row
         .map(v => {
           const value = (v || "").toString().replace(/"/g, '""');
           return `"${value}"`;
         })
-        .join(","))
+        .join(";"))
       .join("\r\n");
 
     const blob = new Blob([csv], {
